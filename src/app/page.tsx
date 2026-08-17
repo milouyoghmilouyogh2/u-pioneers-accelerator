@@ -10,6 +10,7 @@ import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { TeamSection } from "@/components/marketing/team-section";
 import { AlgeriaMap } from "@/components/marketing/algeria-map";
+import { WeaponsPile } from "@/components/marketing/weapons-pile";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
@@ -37,17 +38,26 @@ export default async function LandingPage() {
       <main className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
-          <AlgeriaMap className="pointer-events-none absolute start-1/2 top-6 h-[320px] w-[360px] -translate-x-1/2 text-emerald-500/25 sm:top-2 sm:h-[440px] sm:w-[500px]" />
+          <AlgeriaMap className="pointer-events-none absolute left-1/2 top-1/2 h-[380px] w-[430px] -translate-x-1/2 -translate-y-1/2 text-emerald-500/40 sm:h-[540px] sm:w-[610px]" />
 
           <Reveal className="relative mx-auto max-w-4xl text-center">
             <Badge tone="gold" className="mx-auto">
               <ShieldCheck className="size-3.5" /> حاضنة ومسرعة أعمال رقمية معتمدة
             </Badge>
             <h1 className="mt-6 text-4xl font-extrabold leading-tight text-cream sm:text-5xl md:text-6xl">
-              من فكرتك إلى{" "}
-              <span className="text-gradient-gold">مؤسسة اقتصادية</span>
+              <span className="hero-title-word" style={{ animationDelay: "0ms" }}>
+                من فكرتك إلى
+              </span>{" "}
+              <span
+                className="hero-title-word text-gradient-gold"
+                style={{ animationDelay: "340ms" }}
+              >
+                مؤسسة اقتصادية
+              </span>
               <br />
-              في 16 خطوة
+              <span className="hero-title-word" style={{ animationDelay: "680ms" }}>
+                في 16 خطوة
+              </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-cream-dim sm:text-lg">
               مساحة العمل التفاعلية الاحترافية لقيادة وتتبع مشاريع التخرج
@@ -130,23 +140,7 @@ export default async function LandingPage() {
               </p>
             </Reveal>
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {weapons.map((w, i) => (
-                <Reveal key={w.number} delay={(i % 8) * 40}>
-                  <div className="card-luxury h-full rounded-xl p-4 transition hover:border-gold-500/40">
-                    <span className="text-xs font-bold text-gold-500">
-                      {String(w.number).padStart(2, "0")}
-                    </span>
-                    <p className="mt-1.5 text-sm font-semibold leading-snug text-cream">
-                      {w.title}
-                    </p>
-                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted">
-                      {w.summary}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <WeaponsPile weapons={weapons} />
           </div>
         </section>
 

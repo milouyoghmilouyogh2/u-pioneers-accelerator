@@ -14,6 +14,11 @@ export function Reveal({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  // Content that's already on screen at first paint isn't something the
+  // user "arrived at" by scrolling - it should just be there, with no
+  // animation played, instead of every above-the-fold section sliding up
+  // together the instant the page loads.
+  const [skipAnimation, setSkipAnimation] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
@@ -27,14 +32,17 @@ export function Reveal({
     if (typeof IntersectionObserver === "undefined") {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- unsupported-API fallback, not derived from props/state
       setVisible(true);
+      setSkipAnimation(true);
       return () => clearTimeout(fallback);
     }
 
     // Element may already be on screen by the time this effect runs
-    // (e.g. above the fold) - IntersectionObserver's first callback covers
-    // this too, but checking synchronously avoids depending on it firing.
+    // (e.g. above the fold) - show it in its final state immediately,
+    // with no transition played, since there was no scroll "arrival".
     const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
+    const shownHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+    if (rect.height > 0 && shownHeight / rect.height >= 0.15) {
+      setSkipAnimation(true);
       setVisible(true);
       clearTimeout(fallback);
       return;
@@ -61,8 +69,8 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={cn("reveal", visible && "is-visible", className)}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
+      className={cn("reveal", skipAnimation && "reveal-no-anim", visible && "is-visible", className)}
+      style={{ transitionDelay: visible && !skipAnimation ? `${delay}ms` : "0ms" }}
     >
       {children}
     </div>

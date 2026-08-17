@@ -104,10 +104,35 @@ body {
 }
 
 .text-gradient-gold {
-  background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500));
+  background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500), var(--color-gold-300));
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  animation: gold-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes gold-shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+/* Hero title: each phrase cascades in on its own, distinct from the plain
+   fade the rest of the page uses via .reveal. */
+.hero-title-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(18px) scale(0.96);
+  animation: hero-title-in 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hero-title-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
 }
 
 .card-luxury {
@@ -134,8 +159,8 @@ body {
 /* Scroll-reveal (JS toggles .is-visible via IntersectionObserver) */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  transform: translateY(22px);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
 }
 
 .reveal.is-visible {
@@ -143,8 +168,75 @@ body {
   transform: translateY(0);
 }
 
+/* Cards get their shadow only once their .reveal wrapper has arrived on
+   screen, so the shadow visibly grows in alongside the fade instead of
+   just sitting there from the first paint. */
+.reveal .card-luxury {
+  box-shadow: none;
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out, box-shadow 1s ease-out 0.15s;
+}
+
+.reveal.is-visible .card-luxury {
+  box-shadow: var(--shadow-card);
+}
+
+/* Escape hatch: content already on screen at first paint shows its final
+   state immediately, with no transition played at all - only content the
+   user actually scrolls to should visibly animate in. */
+.reveal.reveal-no-anim,
+.reveal.reveal-no-anim .card-luxury {
+  transition: none !important;
+}
+
+/* Algeria watermark: fades/scales in once, then breathes gently so it
+   never reads as a static, dead element. Transform-only - cheap on phones. */
+.algeria-map {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 1.8s ease-out, transform 1.8s ease-out;
+}
+
+.algeria-map.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  animation: algeria-breathe 8s ease-in-out 1.8s infinite;
+}
+
+.algeria-map.no-anim {
+  transition: none;
+  transform: scale(1);
+  animation: algeria-breathe 8s ease-in-out 0.3s infinite;
+}
+
+@keyframes algeria-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .text-gradient-gold {
+    animation: none;
+    background-position: 0% center;
+  }
+
+  .hero-title-word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .algeria-map,
+  .algeria-map.is-visible,
+  .algeria-map.no-anim {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+
+  .reveal,
+  .reveal.reveal-no-anim {
     opacity: 1;
     transform: none;
     transition: none;
