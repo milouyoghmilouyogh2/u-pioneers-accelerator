@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 export function Counter({
   value,
   suffix = "",
-  duration = 1400,
+  duration = 1000,
 }: {
   value: number;
   suffix?: string;

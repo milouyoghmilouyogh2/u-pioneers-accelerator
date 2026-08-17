@@ -37,7 +37,7 @@ export default async function LandingPage() {
       <main className="flex-1">
         {/* Hero */}
         <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
-          <AlgeriaMap className="pointer-events-none absolute start-1/2 top-4 h-[560px] w-[560px] -translate-x-1/2 text-emerald-500/[0.07] sm:h-[720px] sm:w-[720px]" />
+          <AlgeriaMap className="pointer-events-none absolute start-1/2 top-6 h-[320px] w-[360px] -translate-x-1/2 text-emerald-500/25 sm:top-2 sm:h-[440px] sm:w-[500px]" />
 
           <Reveal className="relative mx-auto max-w-4xl text-center">
             <Badge tone="gold" className="mx-auto">

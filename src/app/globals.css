@@ -134,8 +134,8 @@ body {
 /* Scroll-reveal (JS toggles .is-visible via IntersectionObserver) */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(14px);
+  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 }
 
 .reveal.is-visible {
