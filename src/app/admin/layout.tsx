@@ -19,7 +19,7 @@ export default async function AdminLayout({
             <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-cream">
               <ShieldCheck className="size-4" />
             </span>
-            <span className="font-bold text-cream">لوحة تحكم U-Pioneers</span>
+            <span className="hidden font-bold text-cream sm:inline">لوحة تحكم U-Pioneers</span>
           </Link>
 
           <div className="flex items-center gap-3">
@@ -28,9 +28,10 @@ export default async function AdminLayout({
             </span>
             <Link
               href="/dashboard"
-              className="flex items-center gap-1.5 rounded-full border border-gold-500/40 bg-gold-500/10 px-3 py-1.5 text-xs font-medium text-gold-300 transition hover:bg-gold-500/20"
+              className="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-3.5 py-2 text-sm font-medium text-gold-300 transition hover:bg-gold-500/20 active:scale-95"
             >
-              <LayoutDashboard className="size-3.5" />
+              <LayoutDashboard className="size-4 shrink-0" />
+              <span className="sm:hidden">حسابي</span>
               <span className="hidden sm:inline">عرض حسابي كرائد أعمال</span>
             </Link>
             <form action={signOutAction}>

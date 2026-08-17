@@ -210,30 +210,36 @@ export type Database = {
       }
       support_tickets: {
         Row: {
+          admin_reply: string | null
           created_at: string
           id: string
           message: string
           name: string
+          replied_at: string | null
           status: string
           ticket_type: string
           user_id: string | null
           whatsapp: string | null
         }
         Insert: {
+          admin_reply?: string | null
           created_at?: string
           id?: string
           message: string
           name: string
+          replied_at?: string | null
           status?: string
           ticket_type?: string
           user_id?: string | null
           whatsapp?: string | null
         }
         Update: {
+          admin_reply?: string | null
           created_at?: string
           id?: string
           message?: string
           name?: string
+          replied_at?: string | null
           status?: string
           ticket_type?: string
           user_id?: string | null

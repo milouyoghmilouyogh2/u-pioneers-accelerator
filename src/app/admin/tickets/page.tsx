@@ -33,6 +33,8 @@ export default async function AdminTicketsPage() {
               message={t.message}
               status={t.status}
               createdAt={t.created_at}
+              adminReply={t.admin_reply}
+              repliedAt={t.replied_at}
             />
           ))
         )}

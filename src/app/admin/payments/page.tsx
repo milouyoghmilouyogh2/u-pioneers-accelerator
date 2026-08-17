@@ -16,7 +16,11 @@ export default async function AdminPaymentsPage() {
       const { data } = await supabase.storage
         .from("receipts")
         .createSignedUrl(r.receipt_path, 600);
-      return { ...r, receiptUrl: data?.signedUrl ?? null };
+      return {
+        ...r,
+        receiptUrl: data?.signedUrl ?? null,
+        isPdf: r.receipt_path.toLowerCase().endsWith(".pdf"),
+      };
     })
   );
 
@@ -58,6 +62,7 @@ export default async function AdminPaymentsPage() {
               status={r.status}
               createdAt={r.created_at}
               receiptUrl={r.receiptUrl}
+              isPdf={r.isPdf}
             />
           ))
         )}
@@ -83,6 +88,7 @@ export default async function AdminPaymentsPage() {
               status={r.status}
               createdAt={r.created_at}
               receiptUrl={r.receiptUrl}
+              isPdf={r.isPdf}
             />
           ))}
         </div>

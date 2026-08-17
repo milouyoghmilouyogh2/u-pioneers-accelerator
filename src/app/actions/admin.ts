@@ -61,6 +61,24 @@ export async function closeSupportTicket(ticketId: string) {
   return { success: true };
 }
 
+export async function replyToSupportTicket(ticketId: string, reply: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+
+  const trimmed = reply.trim();
+  if (!trimmed) return { error: "الرجاء كتابة نص الرد أولاً." };
+
+  const { error } = await supabase
+    .from("support_tickets")
+    .update({ admin_reply: trimmed, replied_at: new Date().toISOString() })
+    .eq("id", ticketId);
+
+  if (error) return { error: error.message };
+  revalidatePath("/admin/tickets");
+  revalidatePath("/b2b");
+  return { success: true };
+}
+
 export async function updateSetting(key: string, value: string) {
   await requireAdmin();
   const supabase = await createClient();

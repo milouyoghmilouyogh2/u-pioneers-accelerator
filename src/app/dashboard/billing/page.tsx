@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, FileText } from "lucide-react";
 import { getProfile, getSetting, getStartup } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
@@ -18,11 +18,21 @@ export default async function BillingPage() {
   ]);
 
   const supabase = await createClient();
-  const { data: requests } = await supabase
+  const { data: requestsRaw } = await supabase
     .from("payment_requests")
     .select("*")
     .eq("startup_id", startup.id)
     .order("created_at", { ascending: false });
+
+  const requests = await Promise.all(
+    (requestsRaw ?? []).map(async (r) => {
+      const isPdf = r.receipt_path.toLowerCase().endsWith(".pdf");
+      const { data } = await supabase.storage
+        .from("receipts")
+        .createSignedUrl(r.receipt_path, 600);
+      return { ...r, receiptUrl: data?.signedUrl ?? null, isPdf };
+    })
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -82,16 +92,40 @@ export default async function BillingPage() {
         </div>
       )}
 
-      {requests && requests.length > 0 && (
+      {requests.length > 0 && (
         <div className="card-luxury rounded-2xl p-6">
           <h2 className="text-sm font-semibold text-cream">طلبات سابقة</h2>
-          <div className="mt-4 flex flex-col gap-2">
+          <p className="mt-1 text-xs text-muted">
+            هذه صورة الوصل الذي رفعته، للتأكد من وصوله بنجاح.
+          </p>
+          <div className="mt-4 flex flex-col gap-3">
             {requests.map((r) => (
               <div
                 key={r.id}
-                className="flex items-center justify-between rounded-lg border border-border px-4 py-3"
+                className="flex items-center gap-3 rounded-lg border border-border px-4 py-3"
               >
-                <span className="text-sm text-cream-dim">
+                {r.receiptUrl &&
+                  (r.isPdf ? (
+                    <a
+                      href={r.receiptUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex size-12 shrink-0 flex-col items-center justify-center gap-0.5 rounded-lg border border-border bg-surface text-gold-400"
+                    >
+                      <FileText className="size-5" />
+                      <span className="text-[9px]">PDF</span>
+                    </a>
+                  ) : (
+                    <a href={r.receiptUrl} target="_blank" rel="noreferrer">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={r.receiptUrl}
+                        alt="وصل التحويل الذي رفعته"
+                        className="size-12 shrink-0 rounded-lg border border-border object-cover"
+                      />
+                    </a>
+                  ))}
+                <span className="flex-1 text-sm text-cream-dim">
                   {formatDate(r.created_at)}
                 </span>
                 <StatusBadge status={r.status} />

@@ -25,7 +25,7 @@ export default async function DashboardLayout({
             <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-gold-400 to-gold-600 text-ink">
               <Rocket className="size-4" />
             </span>
-            <span className="font-bold text-cream">U-Pioneers</span>
+            <span className="hidden font-bold text-cream sm:inline">U-Pioneers</span>
           </Link>
 
           <div className="flex items-center gap-3">
@@ -39,9 +39,10 @@ export default async function DashboardLayout({
             {profile.role === "admin" && (
               <Link
                 href="/admin"
-                className="flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 transition hover:bg-emerald-500/20"
+                className="flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500/20 active:scale-95"
               >
-                <ShieldCheck className="size-3.5" />
+                <ShieldCheck className="size-4 shrink-0" />
+                <span className="sm:hidden">الإدارة</span>
                 <span className="hidden sm:inline">لوحة التحكم الإدارية</span>
               </Link>
             )}
