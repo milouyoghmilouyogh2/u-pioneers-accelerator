@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# U-Pioneers Accelerator
 
-## Getting Started
+Real, production-grade rebuild of the U-Pioneers digital accelerator platform: Next.js (App Router) + Supabase (Postgres, Auth, Storage, Row Level Security).
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, TypeScript, Tailwind CSS v4)
+- **Supabase** — database, authentication, file storage, and authorization (RLS)
+- Hosting target: **Vercel** (free tier)
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires `.env.local` (already present locally, not committed) with:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploying to Vercel
 
-## Learn More
+1. Push this repository to GitHub (private or public, your choice).
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
+3. Set the **Root Directory** to `u-pioneers-web` if the repo contains more than this app.
+4. Add the two environment variables above in the Vercel project settings (Project → Settings → Environment Variables).
+5. Deploy. Vercel will build and host it on a free `*.vercel.app` URL.
 
-To learn more about Next.js, take a look at the following resources:
+## Before going live — operational checklist
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Replace the placeholder BaridiMob/CCP RIP number.** Log in as admin → Settings → update "رقم RIP" with your real account number (it currently holds a placeholder value).
+- **Set the organizer WhatsApp number** the same way if it needs to change.
+- **Configure custom SMTP for Supabase Auth.** Supabase's default email sender is rate-limited (a few emails/hour) and not meant for production signup volume. Add a provider like Resend or Postmark under Supabase → Authentication → Email settings before real users start registering, or confirmation emails will fail to deliver at scale.
+- **Promote your admin account.** The first admin has to be set directly in the database (`update profiles set role = 'admin' where id = ...`) — there's no self-service way to become admin, by design.
+- **Custom domain (optional).** Add it in Vercel's project settings once you have one.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app` — routes (App Router)
+- `src/app/actions` — Server Actions (auth, weapons, payments, admin, support)
+- `src/lib/dal.ts` — server-only data access layer (auth/role checks live here)
+- `src/lib/supabase` — Supabase client factories + generated database types
+- `src/proxy.ts` — route protection (Next.js 16 renamed Middleware to Proxy)
+- Supabase schema/policies live in the Supabase project itself (see `supabase` MCP project `u-pioneers-accelerator`), not as local migration files.

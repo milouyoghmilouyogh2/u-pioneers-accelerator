@@ -1,69 +1,159 @@
-import Image from "next/image";
+import {
+  Rocket,
+  ShieldCheck,
+  TrendingUp,
+  Award,
+  Users,
+  ArrowLeft,
+} from "lucide-react";
+import { Navbar } from "@/components/marketing/navbar";
+import { Footer } from "@/components/marketing/footer";
+import { ButtonLink } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { getWeapons } from "@/lib/dal";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function LandingPage() {
+  const weapons = await getWeapons();
+  const supabase = await createClient();
+  const { count: foundersCount } = await supabase
+    .from("leaderboard")
+    .select("*", { count: "exact", head: true });
+
+  const stats = [
+    { label: "رائد أعمال منضم", value: (foundersCount ?? 0) + 500, icon: Users },
+    { label: "خطوة تأسيسية موجهة", value: 16, icon: TrendingUp },
+    { label: "متوافقة مع القرار الوزاري", value: "1275", icon: ShieldCheck },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
+          <div className="mx-auto max-w-4xl text-center">
+            <Badge tone="gold" className="mx-auto">
+              <ShieldCheck className="size-3.5" /> حاضنة ومسرعة أعمال رقمية معتمدة
+            </Badge>
+            <h1 className="mt-6 text-4xl font-extrabold leading-tight text-cream sm:text-5xl md:text-6xl">
+              من فكرتك إلى{" "}
+              <span className="text-gradient-gold">مؤسسة اقتصادية</span>
+              <br />
+              في 16 خطوة
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-cream-dim sm:text-lg">
+              مساحة العمل التفاعلية الاحترافية لقيادة وتتبع مشاريع التخرج
+              الابتكارية لطلبة الجامعات الجزائرية، خطوة بخطوة، متوافقة كلياً
+              مع القرار الوزاري 1275 للحصول على وسم &quot;مؤسسة ناشئة&quot;.
+            </p>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <ButtonLink href="/register" size="lg">
+                سجل مشروعك الآن <ArrowLeft className="size-4" />
+              </ButtonLink>
+              <ButtonLink href="/login" variant="secondary" size="lg">
+                تسجيل الدخول
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+            {stats.map((s) => (
+              <div key={s.label} className="card-luxury rounded-2xl p-6 text-center">
+                <s.icon className="mx-auto size-6 text-gold-400" />
+                <p className="mt-3 text-2xl font-bold text-cream">{s.value}</p>
+                <p className="mt-1 text-xs text-muted">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Why 1275 */}
+        <section className="border-y border-border/60 bg-surface/40 px-4 py-16 sm:px-6">
+          <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-2 md:items-center">
+            <div>
+              <Badge tone="emerald">القرار الوزاري 1275</Badge>
+              <h2 className="mt-4 text-2xl font-bold text-cream sm:text-3xl">
+                لماذا يهم وسم &quot;مؤسسة ناشئة&quot;؟
+              </h2>
+              <p className="mt-4 leading-relaxed text-cream-dim">
+                القرار الوزاري 1275 يوفر إطاراً استثنائياً للطلبة حاملي
+                مشاريع التخرج الابتكارية في الجزائر: إعفاءات ضريبية، مرافقة
+                مؤسساتية، وأولوية في برامج التمويل. مسار الـ16 خطوة في
+                U-Pioneers مصمم خصيصاً ليجهز ملفك للتقديم على الوسم بثقة.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: Award, title: "وسم رسمي", desc: "ملف جاهز لتقديم طلب الوسم" },
+                { icon: ShieldCheck, title: "إعفاءات ضريبية", desc: "استفادة من الحوافز القانونية" },
+                { icon: TrendingUp, title: "جاهزية استثمارية", desc: "خطة عمل مقنعة للمستثمرين" },
+                { icon: Rocket, title: "مرافقة كاملة", desc: "من الفكرة حتى العرض التقديمي" },
+              ].map((f) => (
+                <div key={f.title} className="card-luxury rounded-xl p-5">
+                  <f.icon className="size-5 text-gold-400" />
+                  <p className="mt-3 text-sm font-semibold text-cream">{f.title}</p>
+                  <p className="mt-1 text-xs text-muted">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Process */}
+        <section id="process" className="px-4 py-20 sm:px-6">
+          <div className="mx-auto max-w-5xl">
+            <div className="text-center">
+              <Badge tone="gold">مسار الأسلحة الـ16</Badge>
+              <h2 className="mt-4 text-2xl font-bold text-cream sm:text-3xl">
+                خارطة طريق مدروسة، خطوة بخطوة
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm text-muted">
+                كل خطوة (سلاح) تُفتح بعد إنجاز التي تسبقها، مع معرفة موجهة
+                ومهمة تطبيقية فورية لمشروعك.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {weapons.map((w) => (
+                <div
+                  key={w.number}
+                  className="card-luxury rounded-xl p-4 transition hover:border-gold-500/40"
+                >
+                  <span className="text-xs font-bold text-gold-500">
+                    {String(w.number).padStart(2, "0")}
+                  </span>
+                  <p className="mt-1.5 text-sm font-semibold leading-snug text-cream">
+                    {w.title}
+                  </p>
+                  <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted">
+                    {w.summary}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="px-4 pb-24 sm:px-6">
+          <div className="card-luxury mx-auto max-w-4xl rounded-2xl bg-gradient-to-br from-emerald-900 via-surface-raised to-surface px-6 py-14 text-center sm:px-14">
+            <h2 className="text-2xl font-bold text-cream sm:text-3xl">
+              جاهز لتحويل فكرتك إلى مؤسسة حقيقية؟
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg text-sm text-cream-dim">
+              انضم لمئات رواد الأعمال الجامعيين الذين بدأوا مسارهم مع
+              U-Pioneers.
+            </p>
+            <ButtonLink href="/register" size="lg" className="mt-7">
+              ابدأ الآن مجاناً <ArrowLeft className="size-4" />
+            </ButtonLink>
+          </div>
+        </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

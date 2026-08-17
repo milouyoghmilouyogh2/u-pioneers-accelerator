@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-ink: #061510;
+  --color-surface: #0a1f16;
+  --color-surface-raised: #0d2a1d;
+  --color-border: #1c3d2c;
+  --color-cream: #f7f2e4;
+  --color-cream-dim: #cfd9d0;
+  --color-muted: #8fa89a;
+  --color-emerald-50: #e9f3ec;
+  --color-emerald-400: #2f8f5c;
+  --color-emerald-500: #1f7a4d;
+  --color-emerald-600: #145c3a;
+  --color-emerald-700: #0f5132;
+  --color-emerald-900: #0b2e1b;
+  --color-gold-50: #f6efd8;
+  --color-gold-300: #e8cd7f;
+  --color-gold-400: #d7b556;
+  --color-gold-500: #c5a03c;
+  --color-gold-600: #a8842c;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--color-ink);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-border: var(--color-border);
+  --color-cream: var(--color-cream);
+  --color-cream-dim: var(--color-cream-dim);
+  --color-muted: var(--color-muted);
+  --color-emerald-50: var(--color-emerald-50);
+  --color-emerald-400: var(--color-emerald-400);
+  --color-emerald-500: var(--color-emerald-500);
+  --color-emerald-600: var(--color-emerald-600);
+  --color-emerald-700: var(--color-emerald-700);
+  --color-emerald-900: var(--color-emerald-900);
+  --color-gold-50: var(--color-gold-50);
+  --color-gold-300: var(--color-gold-300);
+  --color-gold-400: var(--color-gold-400);
+  --color-gold-500: var(--color-gold-500);
+  --color-gold-600: var(--color-gold-600);
+  --font-sans: var(--font-cairo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-cairo), "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-ink);
+}
+
+.bg-luxury-grid {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(197, 160, 60, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(31, 122, 77, 0.25), transparent 45%),
+    linear-gradient(180deg, #061510 0%, #0a1f16 100%);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-luxury {
+  background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
 }
