@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
+import { useTheme } from "@/components/providers/theme-provider";
 
 const LINKS = [
   { href: "/#process", label: "المسار" },
@@ -13,6 +14,7 @@ const LINKS = [
 
 export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [open, setOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="md:hidden">
@@ -38,6 +40,13 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
                 {l.label}
               </Link>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-cream-dim hover:bg-white/5 hover:text-cream"
+            >
+              {theme === "dark" ? <Sun className="size-4.5" /> : <Moon className="size-4.5" />}
+              {theme === "dark" ? "الوضع الفاتح" : "الوضع الداكن"}
+            </button>
             {!isLoggedIn && (
               <ButtonLink
                 href="/login"

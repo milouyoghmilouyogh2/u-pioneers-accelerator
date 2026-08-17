@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger";
+type Variant = "primary" | "secondary" | "ghost" | "danger" | "dark";
 type Size = "sm" | "md" | "lg";
 
 const VARIANT_STYLES: Record<Variant, string> = {
@@ -12,6 +12,7 @@ const VARIANT_STYLES: Record<Variant, string> = {
     "bg-surface-raised border border-border text-cream hover:border-gold-500/50 hover:text-gold-300",
   ghost: "text-cream-dim hover:text-gold-300",
   danger: "bg-red-600/90 text-white hover:bg-red-600",
+  dark: "bg-[#12130f] text-white font-semibold hover:bg-black shadow-lg shadow-black/20",
 };
 
 const SIZE_STYLES: Record<Size, string> = {

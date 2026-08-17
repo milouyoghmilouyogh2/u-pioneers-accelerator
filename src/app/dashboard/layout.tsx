@@ -4,6 +4,7 @@ import { Rocket, LogOut, ShieldCheck } from "lucide-react";
 import { getProfile } from "@/lib/dal";
 import { signOutAction } from "@/app/actions/auth";
 import { SidebarNav, MobileTabBar } from "@/components/dashboard/app-nav";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { initialsOf } from "@/lib/utils";
 
 export default async function DashboardLayout({
@@ -29,6 +30,7 @@ export default async function DashboardLayout({
           </Link>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <div className="hidden text-end sm:block">
               <p className="text-sm font-medium text-cream">{profile.full_name}</p>
               <p className="text-xs text-muted">{profile.university}</p>

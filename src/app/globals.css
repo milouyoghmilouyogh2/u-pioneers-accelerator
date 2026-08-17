@@ -1,6 +1,30 @@
 @import "tailwindcss";
 
+/* Light theme (default) */
 :root {
+  --color-ink: #faf7f0;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #e7e1d2;
+  --color-cream: #17241c;
+  --color-cream-dim: #4b5a50;
+  --color-muted: #7c8a7e;
+  --color-emerald-50: #e9f3ec;
+  --color-emerald-400: #2f8f5c;
+  --color-emerald-500: #1f7a4d;
+  --color-emerald-600: #145c3a;
+  --color-emerald-700: #0f5132;
+  --color-emerald-900: #0b2e1b;
+  --color-gold-50: #fdece0;
+  --color-gold-300: #f3a870;
+  --color-gold-400: #ee8c42;
+  --color-gold-500: #e8720c;
+  --color-gold-600: #c25c08;
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset, 0 16px 32px -18px rgba(23, 36, 28, 0.18);
+}
+
+/* Dark theme (opt-in via toggle) */
+:root[data-theme="dark"] {
   --color-ink: #061510;
   --color-surface: #0a1f16;
   --color-surface-raised: #0d2a1d;
@@ -19,6 +43,7 @@
   --color-gold-400: #d7b556;
   --color-gold-500: #c5a03c;
   --color-gold-600: #a8842c;
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
 }
 
 @theme inline {
@@ -51,6 +76,7 @@ body {
   background: var(--color-ink);
   color: var(--color-cream);
   font-family: var(--font-cairo), "Segoe UI", sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
@@ -60,9 +86,21 @@ body {
 
 .bg-luxury-grid {
   background-image:
-    radial-gradient(circle at 15% 10%, rgba(197, 160, 60, 0.10), transparent 40%),
+    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--color-gold-500) 8%, transparent), transparent 40%),
+    radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--color-emerald-500) 12%, transparent), transparent 45%);
+  background-color: var(--color-ink);
+}
+
+:root[data-theme="dark"] .bg-luxury-grid {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(197, 160, 60, 0.1), transparent 40%),
     radial-gradient(circle at 85% 0%, rgba(31, 122, 77, 0.25), transparent 45%),
     linear-gradient(180deg, #061510 0%, #0a1f16 100%);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(circle, var(--color-border) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
 }
 
 .text-gradient-gold {
@@ -75,7 +113,7 @@ body {
 .card-luxury {
   background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
   border: 1px solid var(--color-border);
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--shadow-card);
 }
 
 @keyframes fade-up {
@@ -91,4 +129,24 @@ body {
 
 .animate-fade-up {
   animation: fade-up 0.5s ease-out both;
+}
+
+/* Scroll-reveal (JS toggles .is-visible via IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

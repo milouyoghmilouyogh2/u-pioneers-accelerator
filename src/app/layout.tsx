@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { ThemeProvider, NO_FLASH_THEME_SCRIPT } from "@/components/providers/theme-provider";
 import { PublicMobileNav } from "@/components/marketing/public-mobile-nav";
 import { getUser } from "@/lib/dal";
 import "./globals.css";
@@ -23,12 +24,20 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <html lang="ar" dir="rtl" className={`${cairo.variable} h-full`}>
+    <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={`${cairo.variable} h-full`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: NO_FLASH_THEME_SCRIPT }} />
+        <noscript>
+          <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
+        </noscript>
+      </head>
       <body className="min-h-full bg-ink text-cream bg-luxury-grid antialiased">
-        <ToastProvider>
-          {children}
-          <PublicMobileNav isLoggedIn={!!user} />
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            {children}
+            <PublicMobileNav isLoggedIn={!!user} />
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

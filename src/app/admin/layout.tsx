@@ -3,6 +3,7 @@ import { ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
 import { requireAdmin } from "@/lib/dal";
 import { signOutAction } from "@/app/actions/auth";
 import { SidebarNav, MobileTabBar } from "@/components/dashboard/app-nav";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default async function AdminLayout({
   children,
@@ -23,6 +24,7 @@ export default async function AdminLayout({
           </Link>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <span className="hidden text-sm text-cream-dim sm:inline">
               {admin.full_name}
             </span>

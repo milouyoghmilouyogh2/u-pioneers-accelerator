@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Rocket } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { getUser } from "@/lib/dal";
 import { MobileMenu } from "./mobile-menu";
 
@@ -36,6 +37,7 @@ export async function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle className="hidden sm:flex" />
           {user ? (
             <ButtonLink href="/dashboard" size="sm">
               لوحة التحكم
