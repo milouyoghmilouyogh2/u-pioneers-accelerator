@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Rocket, Menu } from "lucide-react";
+import { Rocket } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { getUser } from "@/lib/dal";
+import { MobileMenu } from "./mobile-menu";
 
 const LINKS = [
   { href: "/#process", label: "المسار" },
@@ -49,9 +50,7 @@ export async function Navbar() {
               </ButtonLink>
             </>
           )}
-          <button className="text-cream-dim md:hidden" aria-label="القائمة">
-            <Menu className="size-6" />
-          </button>
+          <MobileMenu isLoggedIn={!!user} />
         </div>
       </nav>
     </header>

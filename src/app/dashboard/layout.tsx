@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Rocket, LogOut } from "lucide-react";
 import { getProfile } from "@/lib/dal";
 import { signOutAction } from "@/app/actions/auth";
@@ -11,6 +12,10 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const profile = await getProfile();
+
+  if (!profile.university || !profile.major || !profile.whatsapp) {
+    redirect("/onboarding");
+  }
 
   return (
     <div className="min-h-screen">

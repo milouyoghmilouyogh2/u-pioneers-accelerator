@@ -6,6 +6,7 @@ import { signUpAction, type AuthState } from "@/app/actions/auth";
 import { Field, Input, Select, Textarea } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UNIVERSITIES } from "@/lib/universities";
+import { GoogleAuthButton } from "@/components/auth/google-button";
 import { CheckCircle2, TriangleAlert } from "lucide-react";
 
 export function RegisterForm() {
@@ -15,7 +16,15 @@ export function RegisterForm() {
   );
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
+      <GoogleAuthButton />
+      <div className="flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-border" />
+        أو سجل ببريدك الإلكتروني
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <form action={action} className="flex flex-col gap-4">
       <Field label="الاسم الكامل للطالب (ثلاثي باللاتينية للشهادة)">
         <Input name="full_name" required placeholder="Mohamed Amine Belkacem" />
       </Field>
@@ -78,6 +87,7 @@ export function RegisterForm() {
           تسجيل الدخول
         </Link>
       </p>
-    </form>
+      </form>
+    </div>
   );
 }
