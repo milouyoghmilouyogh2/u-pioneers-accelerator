@@ -9,8 +9,8 @@ const VARIANT_STYLES: Record<Variant, string> = {
   primary:
     "bg-gradient-to-l from-gold-400 to-gold-600 text-ink font-semibold hover:brightness-110 shadow-lg shadow-gold-600/20",
   secondary:
-    "bg-surface-raised border border-border text-cream hover:border-gold-500/50 hover:text-gold-300",
-  ghost: "text-cream-dim hover:text-gold-300",
+    "bg-surface-raised border border-border text-cream hover:border-gold-500/50 hover:text-gold-500",
+  ghost: "text-cream-dim hover:text-gold-500",
   danger: "bg-red-600/90 text-white hover:bg-red-600",
   dark: "bg-[#12130f] text-white font-semibold hover:bg-black shadow-lg shadow-black/20",
 };

@@ -94,9 +94,9 @@ export default async function DashboardPage() {
                 className={
                   "flex size-9 items-center justify-center rounded-full border text-xs font-bold transition " +
                   (state === "done"
-                    ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
+                    ? "border-emerald-500/50 bg-emerald-500/15 text-cream"
                     : state === "active"
-                      ? "border-gold-500/60 bg-gold-500/20 text-gold-300"
+                      ? "border-gold-500/60 bg-gold-500/20 text-cream"
                       : "border-border text-muted")
                 }
                 title={w.title}

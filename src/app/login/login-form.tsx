@@ -32,7 +32,7 @@ export function LoginForm() {
         </Field>
 
         {state?.error && (
-          <p className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+          <p className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-cream">
             <TriangleAlert className="size-4 shrink-0 translate-y-0.5" />
             {state.error}
           </p>

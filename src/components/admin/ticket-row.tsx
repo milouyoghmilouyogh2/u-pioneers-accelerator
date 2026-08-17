@@ -80,9 +80,9 @@ export function TicketRow({
         <div className="mt-3 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2">
           <CornerUpLeft className="mt-0.5 size-3.5 shrink-0 text-emerald-400" />
           <div>
-            <p className="text-sm text-emerald-100">{adminReply}</p>
+            <p className="text-sm text-cream">{adminReply}</p>
             {repliedAt && (
-              <p className="mt-1 text-[11px] text-emerald-300/70">
+              <p className="mt-1 text-[11px] text-cream-dim">
                 {formatDate(repliedAt)}
               </p>
             )}

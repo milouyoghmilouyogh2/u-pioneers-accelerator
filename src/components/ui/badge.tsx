@@ -3,10 +3,13 @@ import { cn } from "@/lib/utils";
 type Tone = "gold" | "emerald" | "muted" | "red";
 
 const TONES: Record<Tone, string> = {
-  gold: "bg-gold-500/15 text-gold-300 border-gold-500/30",
-  emerald: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  // Mid-saturation shades read reasonably against both a pale tint (light
+  // theme) and a dark tint (dark theme) of the same low-alpha background -
+  // the lighter 300/400 shades used previously only worked on dark cards.
+  gold: "bg-gold-500/15 text-gold-500 border-gold-500/30",
+  emerald: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
   muted: "bg-white/5 text-muted border-border",
-  red: "bg-red-500/15 text-red-300 border-red-500/30",
+  red: "bg-red-500/15 text-red-500 border-red-500/30",
 };
 
 export function Badge({

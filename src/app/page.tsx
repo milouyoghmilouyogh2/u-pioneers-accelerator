@@ -18,11 +18,11 @@ import { getWeapons } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function LandingPage() {
-  const weapons = await getWeapons();
   const supabase = await createClient();
-  const { count: foundersCount } = await supabase
-    .from("leaderboard")
-    .select("*", { count: "exact", head: true });
+  const [weapons, { count: foundersCount }] = await Promise.all([
+    getWeapons(),
+    supabase.from("leaderboard").select("*", { count: "exact", head: true }),
+  ]);
 
   const stats = [
     { label: "رائد أعمال منضم", value: (foundersCount ?? 0) + 500, icon: Users },

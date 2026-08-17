@@ -26,7 +26,7 @@ export function SidebarNav({ variant }: { variant: Variant }) {
             className={cn(
               "flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm transition",
               active
-                ? "bg-gold-500/15 text-gold-300 font-medium"
+                ? "bg-gold-500/15 text-gold-500 font-medium"
                 : "text-cream-dim hover:bg-white/5 hover:text-cream"
             )}
           >
@@ -52,7 +52,7 @@ export function MobileTabBar({ variant }: { variant: Variant }) {
             href={item.href}
             className={cn(
               "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px]",
-              active ? "text-gold-300" : "text-cream-dim"
+              active ? "text-gold-500" : "text-cream-dim"
             )}
           >
             <item.icon className="size-5" />

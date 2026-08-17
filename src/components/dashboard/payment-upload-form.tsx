@@ -130,11 +130,11 @@ export function PaymentUploadForm() {
               )
             )}
             <div className="min-w-0 flex-1">
-              <p className="flex items-center gap-1.5 text-sm font-medium text-emerald-200">
-                <CheckCircle2 className="size-4 shrink-0" />
+              <p className="flex items-center gap-1.5 text-sm font-medium text-cream">
+                <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
                 تم اختيار الملف بنجاح
               </p>
-              <p className="truncate text-xs text-emerald-300/80">{file.name}</p>
+              <p className="truncate text-xs text-cream-dim">{file.name}</p>
             </div>
             <button
               type="button"
@@ -142,7 +142,7 @@ export function PaymentUploadForm() {
                 e.preventDefault();
                 clearFile();
               }}
-              className="flex size-8 shrink-0 items-center justify-center rounded-full text-emerald-300 hover:bg-white/10"
+              className="flex size-8 shrink-0 items-center justify-center rounded-full text-cream-dim hover:bg-white/10 hover:text-cream"
               aria-label="إزالة الملف"
             >
               <X className="size-4" />

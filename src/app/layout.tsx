@@ -24,7 +24,17 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={`${cairo.variable} h-full`}>
+    <html
+      lang="ar"
+      dir="rtl"
+      data-scroll-behavior="smooth"
+      className={`${cairo.variable} h-full`}
+      // The no-flash script (below) sets data-theme on this element before
+      // React hydrates, which will always differ from the server-rendered
+      // markup that has no theme attribute yet - that mismatch is expected
+      // and intentional, not a bug, so it's suppressed here specifically.
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_THEME_SCRIPT }} />
         <noscript>

@@ -25,9 +25,9 @@ const ICONS: Record<ToastKind, React.ElementType> = {
 };
 
 const KIND_STYLES: Record<ToastKind, string> = {
-  success: "border-emerald-500/40 text-emerald-50",
-  error: "border-red-500/40 text-red-50",
-  warning: "border-gold-500/40 text-gold-50",
+  success: "border-emerald-500/40 text-cream",
+  error: "border-red-500/40 text-cream",
+  warning: "border-gold-500/40 text-cream",
   info: "border-cream-dim/30 text-cream",
 };
 

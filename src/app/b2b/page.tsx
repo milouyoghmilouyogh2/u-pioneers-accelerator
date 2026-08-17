@@ -64,9 +64,9 @@ export default async function B2BPage() {
                       <div className="mt-3 flex items-start gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2">
                         <CornerUpLeft className="mt-0.5 size-3.5 shrink-0 text-emerald-400" />
                         <div>
-                          <p className="text-sm text-emerald-100">{t.admin_reply}</p>
+                          <p className="text-sm text-cream">{t.admin_reply}</p>
                           {t.replied_at && (
-                            <p className="mt-1 text-[11px] text-emerald-300/70">
+                            <p className="mt-1 text-[11px] text-cream-dim">
                               {formatDate(t.replied_at)}
                             </p>
                           )}

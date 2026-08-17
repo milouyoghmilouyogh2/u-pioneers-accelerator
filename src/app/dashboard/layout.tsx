@@ -35,13 +35,13 @@ export default async function DashboardLayout({
               <p className="text-sm font-medium text-cream">{profile.full_name}</p>
               <p className="text-xs text-muted">{profile.university}</p>
             </div>
-            <span className="flex size-9 items-center justify-center rounded-full border border-gold-500/40 bg-gold-500/10 text-sm font-bold text-gold-300">
+            <span className="flex size-9 items-center justify-center rounded-full border border-gold-500/40 bg-gold-500/10 text-sm font-bold text-gold-500">
               {initialsOf(profile.full_name || "؟")}
             </span>
             {profile.role === "admin" && (
               <Link
                 href="/admin"
-                className="flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500/20 active:scale-95"
+                className="flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500/20 active:scale-95"
               >
                 <ShieldCheck className="size-4 shrink-0" />
                 <span className="sm:hidden">الإدارة</span>

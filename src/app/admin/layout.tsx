@@ -30,7 +30,7 @@ export default async function AdminLayout({
             </span>
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-3.5 py-2 text-sm font-medium text-gold-300 transition hover:bg-gold-500/20 active:scale-95"
+              className="flex items-center gap-2 rounded-full border border-gold-500/40 bg-gold-500/10 px-3.5 py-2 text-sm font-medium text-gold-500 transition hover:bg-gold-500/20 active:scale-95"
             >
               <LayoutDashboard className="size-4 shrink-0" />
               <span className="sm:hidden">حسابي</span>

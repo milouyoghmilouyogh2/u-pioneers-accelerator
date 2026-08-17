@@ -29,7 +29,7 @@ export async function Navbar() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm text-cream-dim transition hover:text-gold-300"
+              className="text-sm text-cream-dim transition hover:text-gold-500"
             >
               {l.label}
             </Link>

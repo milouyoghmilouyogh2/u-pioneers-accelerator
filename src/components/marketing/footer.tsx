@@ -23,7 +23,7 @@ export async function Footer() {
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
           <div>
-            <h3 className="text-sm font-semibold text-gold-300">المنصة</h3>
+            <h3 className="text-sm font-semibold text-gold-500">المنصة</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li><Link href="/register" className="hover:text-cream">سجل مشروعك</Link></li>
               <li><Link href="/leaderboard" className="hover:text-cream">لوحة الصدارة</Link></li>
@@ -31,7 +31,7 @@ export async function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gold-300">الدعم</h3>
+            <h3 className="text-sm font-semibold text-gold-500">الدعم</h3>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li><Link href="/b2b" className="hover:text-cream">شركاء ودعم</Link></li>
               <li>
