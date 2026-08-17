@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Rocket, LogOut } from "lucide-react";
+import { Rocket, LogOut, ShieldCheck } from "lucide-react";
 import { getProfile } from "@/lib/dal";
 import { signOutAction } from "@/app/actions/auth";
 import { SidebarNav, MobileTabBar } from "@/components/dashboard/app-nav";
@@ -36,6 +36,15 @@ export default async function DashboardLayout({
             <span className="flex size-9 items-center justify-center rounded-full border border-gold-500/40 bg-gold-500/10 text-sm font-bold text-gold-300">
               {initialsOf(profile.full_name || "؟")}
             </span>
+            {profile.role === "admin" && (
+              <Link
+                href="/admin"
+                className="flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-300 transition hover:bg-emerald-500/20"
+              >
+                <ShieldCheck className="size-3.5" />
+                <span className="hidden sm:inline">لوحة التحكم الإدارية</span>
+              </Link>
+            )}
             <form action={signOutAction}>
               <button
                 type="submit"

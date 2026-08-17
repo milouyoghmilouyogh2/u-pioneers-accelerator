@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, LogOut } from "lucide-react";
+import { ShieldCheck, LogOut, LayoutDashboard } from "lucide-react";
 import { requireAdmin } from "@/lib/dal";
 import { signOutAction } from "@/app/actions/auth";
 import { SidebarNav, MobileTabBar } from "@/components/dashboard/app-nav";
@@ -26,6 +26,13 @@ export default async function AdminLayout({
             <span className="hidden text-sm text-cream-dim sm:inline">
               {admin.full_name}
             </span>
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-1.5 rounded-full border border-gold-500/40 bg-gold-500/10 px-3 py-1.5 text-xs font-medium text-gold-300 transition hover:bg-gold-500/20"
+            >
+              <LayoutDashboard className="size-3.5" />
+              <span className="hidden sm:inline">عرض حسابي كرائد أعمال</span>
+            </Link>
             <form action={signOutAction}>
               <button
                 type="submit"
