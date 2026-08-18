@@ -19,7 +19,9 @@ export function AlgeriaMap({ className }: { className?: string }) {
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    const fallback = setTimeout(() => setVisible(true), 900);
+    // Long safety-net delay - just a backstop for a broken observer, not a
+    // normal-path trigger (it used to fire before the hero even settled).
+    const fallback = setTimeout(() => setVisible(true), 10000);
 
     if (typeof IntersectionObserver === "undefined") {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- unsupported-API fallback, not derived from props/state

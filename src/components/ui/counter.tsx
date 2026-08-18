@@ -40,7 +40,9 @@ export function Counter({
 
     // Safety net: if the observer never fires (unsupported, blocked, or any
     // other reason), the stat must still end up showing the real number.
-    const fallback = setTimeout(run, 1200);
+    // Long enough that it never fires during ordinary scrolling - a 1.2s
+    // version used to count up before the user had even scrolled there.
+    const fallback = setTimeout(run, 10000);
 
     if (typeof IntersectionObserver === "undefined") {
       run();

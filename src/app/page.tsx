@@ -15,15 +15,13 @@ import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import { Counter } from "@/components/ui/counter";
-import { getWeapons } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function LandingPage() {
   const supabase = await createClient();
-  const [weapons, { count: foundersCount, error: leaderboardError }] = await Promise.all([
-    getWeapons(),
-    supabase.from("leaderboard").select("*", { count: "exact", head: true }),
-  ]);
+  const { count: foundersCount, error: leaderboardError } = await supabase
+    .from("leaderboard")
+    .select("*", { count: "exact", head: true });
   if (leaderboardError) console.error("leaderboard count failed:", leaderboardError.message);
 
   const stats = [
@@ -141,8 +139,10 @@ export default async function LandingPage() {
               </p>
             </Reveal>
 
-            <WeaponsPile weapons={weapons} />
           </div>
+          <Reveal delay={100}>
+            <WeaponsPile />
+          </Reveal>
         </section>
 
         {/* CTA */}
