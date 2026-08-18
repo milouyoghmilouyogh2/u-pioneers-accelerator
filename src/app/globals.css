@@ -106,15 +106,20 @@ body {
 .text-gradient-gold {
   background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500), var(--color-gold-300));
   background-size: 200% auto;
+  background-position: 100% center;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gold-shimmer 6s ease-in-out infinite;
+  /* One sweep on entrance only - background-position isn't a compositor
+     property, so looping this forever (as it did before) forces a paint on
+     every single frame for as long as the page stays open. Playing once
+     also matches "no automatic animation unrelated to scrolling". */
+  animation: gold-shimmer 1.4s ease-out 0.5s both;
 }
 
 @keyframes gold-shimmer {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 100% center; }
+  from { background-position: 0% center; }
+  to { background-position: 100% center; }
 }
 
 /* Hero title: each phrase cascades in on its own, distinct from the plain
@@ -188,8 +193,10 @@ body {
   transition: none !important;
 }
 
-/* Algeria watermark: fades/scales in once, then breathes gently so it
-   never reads as a static, dead element. Transform-only - cheap on phones. */
+/* Algeria watermark: fades/scales in once, then breathes gently a few
+   times and stops - not a forever-loop, so it doesn't keep costing paint
+   work for as long as the tab stays open. Transform-only, so what runs is
+   compositor-cheap. */
 .algeria-map {
   opacity: 0;
   transform: scale(0.94);
@@ -199,13 +206,13 @@ body {
 .algeria-map.is-visible {
   opacity: 1;
   transform: scale(1);
-  animation: algeria-breathe 8s ease-in-out 1.8s infinite;
+  animation: algeria-breathe 8s ease-in-out 1.8s 3;
 }
 
 .algeria-map.no-anim {
   transition: none;
   transform: scale(1);
-  animation: algeria-breathe 8s ease-in-out 0.3s infinite;
+  animation: algeria-breathe 8s ease-in-out 0.3s 3;
 }
 
 @keyframes algeria-breathe {

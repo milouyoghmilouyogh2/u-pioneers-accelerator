@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/providers/toast-provider";
 
 function GoogleIcon() {
   return (
@@ -16,16 +17,25 @@ function GoogleIcon() {
 
 export function GoogleAuthButton() {
   const [pending, setPending] = useState(false);
+  const { showToast } = useToast();
 
   async function handleClick() {
     setPending(true);
     const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+    // A successful call navigates the browser away to Google immediately,
+    // so reaching this line at all means it failed - without this, a
+    // rejected/misconfigured provider left the button stuck on "pending"
+    // forever since nothing ever reset it.
+    if (error) {
+      setPending(false);
+      showToast("تسجيل الدخول عبر Google غير متاح حالياً، الرجاء استخدام البريد الإلكتروني.", "error");
+    }
   }
 
   return (
