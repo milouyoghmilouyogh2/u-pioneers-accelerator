@@ -42,6 +42,12 @@ export function ForgotPasswordForm() {
           تسجيل الدخول
         </Link>
       </p>
+      <p className="text-center text-sm text-muted">
+        ليس لديك حساب أصلاً؟{" "}
+        <Link href="/register" className="font-medium text-gold-400 hover:underline">
+          سجل حساباً جديداً مباشرة
+        </Link>
+      </p>
     </form>
   );
 }
