@@ -20,10 +20,11 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function LandingPage() {
   const supabase = await createClient();
-  const [weapons, { count: foundersCount }] = await Promise.all([
+  const [weapons, { count: foundersCount, error: leaderboardError }] = await Promise.all([
     getWeapons(),
     supabase.from("leaderboard").select("*", { count: "exact", head: true }),
   ]);
+  if (leaderboardError) console.error("leaderboard count failed:", leaderboardError.message);
 
   const stats = [
     { label: "رائد أعمال منضم", value: (foundersCount ?? 0) + 500, icon: Users },

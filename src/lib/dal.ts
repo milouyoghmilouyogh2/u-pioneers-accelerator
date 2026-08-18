@@ -58,19 +58,21 @@ export const getAnswers = cache(async (startupId: string) => {
 
 export const getWeapons = cache(async () => {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("weapons")
     .select("*")
     .order("number", { ascending: true });
+  if (error) console.error("getWeapons failed:", error.message);
   return data ?? [];
 });
 
 export const getSetting = cache(async (key: string) => {
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("settings")
     .select("value")
     .eq("key", key)
     .single();
+  if (error) console.error(`getSetting(${key}) failed:`, error.message);
   return data?.value ?? null;
 });
