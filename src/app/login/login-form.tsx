@@ -30,6 +30,12 @@ export function LoginForm() {
         <Field label="كلمة المرور">
           <Input type="password" name="password" required />
         </Field>
+        <Link
+          href="/forgot-password"
+          className="-mt-2 self-end text-xs font-medium text-gold-400 hover:underline"
+        >
+          نسيت كلمة المرور؟
+        </Link>
 
         {state?.error && (
           <p className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-cream">
