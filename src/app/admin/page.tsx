@@ -9,7 +9,7 @@ export default async function AdminOverviewPage() {
     await Promise.all([
       supabase
         .from("startups")
-        .select("*, profiles!startups_owner_id_fkey(full_name, university, whatsapp)")
+        .select("*")
         .order("progress_percentage", { ascending: false }),
       supabase
         .from("payment_requests")
@@ -20,6 +20,12 @@ export default async function AdminOverviewPage() {
         .select("*", { count: "exact", head: true })
         .eq("status", "open"),
     ]);
+
+  // Get profiles separately to avoid JOIN issues
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, full_name, university, whatsapp");
+  const profileMap = new Map(profiles?.map((p) => [p.id, p]) ?? []);
 
   const total = startups?.length ?? 0;
   const graduated = startups?.filter((s) => s.progress_percentage >= 100).length ?? 0;
@@ -51,29 +57,32 @@ export default async function AdminOverviewPage() {
               </tr>
             </thead>
             <tbody>
-              {startups?.map((s) => (
-                <tr key={s.id} className="border-b border-border/60 last:border-0">
-                  <td className="px-6 py-3 text-cream">
-                    {(s as unknown as { profiles: { full_name: string } }).profiles?.full_name}
-                  </td>
-                  <td className="px-6 py-3 text-muted">
-                    {(s as unknown as { profiles: { university: string } }).profiles?.university}
-                  </td>
-                  <td className="max-w-[220px] truncate px-6 py-3 text-cream-dim">
-                    {s.project_title}
-                  </td>
-                  <td className="px-6 py-3 text-cream-dim">
-                    {s.progress_percentage}% (سلاح {Math.min(s.current_step, 16)})
-                  </td>
-                  <td className="px-6 py-3">
-                    {s.is_premium ? (
-                      <Badge tone="gold">مفعّل</Badge>
-                    ) : (
-                      <Badge tone="muted">مجاني</Badge>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {startups?.map((s) => {
+                const profile = profileMap.get(s.owner_id);
+                return (
+                  <tr key={s.id} className="border-b border-border/60 last:border-0">
+                    <td className="px-6 py-3 text-cream">
+                      {profile?.full_name ?? "—"}
+                    </td>
+                    <td className="px-6 py-3 text-muted">
+                      {profile?.university ?? "—"}
+                    </td>
+                    <td className="max-w-[220px] truncate px-6 py-3 text-cream-dim">
+                      {s.project_title}
+                    </td>
+                    <td className="px-6 py-3 text-cream-dim">
+                      {s.progress_percentage}% (سلاح {Math.min(s.current_step, 16)})
+                    </td>
+                    <td className="px-6 py-3">
+                      {s.is_premium ? (
+                        <Badge tone="gold">مفعّل</Badge>
+                      ) : (
+                        <Badge tone="muted">مجاني</Badge>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
