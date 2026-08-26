@@ -24,6 +24,11 @@ export type AuthState = {
 // callback route, so the link never actually finishes logging anyone in.
 // Deriving the real origin per-request fixes both at once.
 async function getOrigin() {
+  // Use configured URL to prevent header spoofing in production
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  // Fallback for development
   const h = await headers();
   const host = h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
@@ -178,5 +183,6 @@ function translateAuthError(message: string): string {
   if (message.includes("Email not confirmed")) {
     return "الرجاء تأكيد بريدك الإلكتروني أولاً عبر الرابط المرسل إليك.";
   }
-  return message;
+  // Never leak raw error messages
+  return "حدث خطأ غير متوقع. حاول مرة أخرى.";
 }

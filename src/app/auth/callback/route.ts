@@ -9,6 +9,10 @@ function isSafeRedirect(path: string): boolean {
   if (path.startsWith("//")) return false;
   // Must not contain a full URL
   if (path.includes("://")) return false;
+  // Block newline/tab/null injection (CRLF attacks)
+  if (path.includes("\n") || path.includes("\r") || path.includes("\t") || path.includes("\0")) return false;
+  // Only allow safe characters: alphanumeric, slashes, dots, hyphens, underscores, query params
+  if (!/^\/[a-zA-Z0-9\/\.\-\_\?\=\&\%\#\s]+$/.test(path)) return false;
   return true;
 }
 

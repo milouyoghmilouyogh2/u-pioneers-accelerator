@@ -175,12 +175,15 @@ export async function createUser(formData: FormData) {
 export async function changeUserPassword(userId: string, newPassword: string) {
   await requireAdmin();
 
+  const idParsed = validate(uuidSchema, userId);
+  if (!idParsed.success) return { error: idParsed.error };
+
   if (!newPassword || newPassword.length < 8) {
     return { error: "كلمة المرور يجب أن تتكون من 8 خانات على الأقل." };
   }
 
   const admin = getAdminClient();
-  const { error } = await admin.auth.admin.updateUserById(userId, {
+  const { error } = await admin.auth.admin.updateUserById(idParsed.data, {
     password: newPassword,
   });
 

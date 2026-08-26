@@ -5,6 +5,15 @@ const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 const AUTH_PAGES = ["/login", "/register"];
 
 export async function proxy(request: NextRequest) {
+  // CSRF protection: verify Origin header on POST requests
+  if (request.method === "POST") {
+    const origin = request.headers.get("origin");
+    const host = request.headers.get("host");
+    if (origin && host && !origin.includes(host)) {
+      return NextResponse.json({ error: "CSRF validation failed" }, { status: 403 });
+    }
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
