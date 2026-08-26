@@ -1,0 +1,19 @@
+# U-Pioneers Robots.txt
+# Block private areas, allow public pages
+
+User-agent: *
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /onboarding/
+Disallow: /api/
+Disallow: /auth/
+
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /forgot-password
+Allow: /privacy
+Allow: /leaderboard
+Allow: /b2b
+
+Sitemap: https://u-pioneers-accelerator.vercel.app/sitemap.xml

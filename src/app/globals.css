@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* Light theme (default) */
+:root {
+  --color-ink: #faf7f0;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #e7e1d2;
+  --color-cream: #17241c;
+  --color-cream-dim: #4b5a50;
+  --color-muted: #7c8a7e;
+  --color-emerald-50: #e9f3ec;
+  --color-emerald-400: #2f8f5c;
+  --color-emerald-500: #1f7a4d;
+  --color-emerald-600: #145c3a;
+  --color-emerald-700: #0f5132;
+  --color-emerald-900: #0b2e1b;
+  --color-gold-50: #fdece0;
+  --color-gold-300: #f3a870;
+  --color-gold-400: #ee8c42;
+  --color-gold-500: #e8720c;
+  --color-gold-600: #c25c08;
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset, 0 16px 32px -18px rgba(23, 36, 28, 0.18);
+}
+
+/* Dark theme (opt-in via toggle) */
+:root[data-theme="dark"] {
+  --color-ink: #061510;
+  --color-surface: #0a1f16;
+  --color-surface-raised: #0d2a1d;
+  --color-border: #1c3d2c;
+  --color-cream: #f7f2e4;
+  --color-cream-dim: #cfd9d0;
+  --color-muted: #8fa89a;
+  --color-emerald-50: #e9f3ec;
+  --color-emerald-400: #2f8f5c;
+  --color-emerald-500: #1f7a4d;
+  --color-emerald-600: #145c3a;
+  --color-emerald-700: #0f5132;
+  --color-emerald-900: #0b2e1b;
+  --color-gold-50: #f6efd8;
+  --color-gold-300: #e8cd7f;
+  --color-gold-400: #d7b556;
+  --color-gold-500: #c5a03c;
+  --color-gold-600: #a8842c;
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-border: var(--color-border);
+  --color-cream: var(--color-cream);
+  --color-cream-dim: var(--color-cream-dim);
+  --color-muted: var(--color-muted);
+  --color-emerald-50: var(--color-emerald-50);
+  --color-emerald-400: var(--color-emerald-400);
+  --color-emerald-500: var(--color-emerald-500);
+  --color-emerald-600: var(--color-emerald-600);
+  --color-emerald-700: var(--color-emerald-700);
+  --color-emerald-900: var(--color-emerald-900);
+  --color-gold-50: var(--color-gold-50);
+  --color-gold-300: var(--color-gold-300);
+  --color-gold-400: var(--color-gold-400);
+  --color-gold-500: var(--color-gold-500);
+  --color-gold-600: var(--color-gold-600);
+  --font-sans: var(--font-cairo);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-cairo), "Segoe UI", sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-ink);
+}
+
+.bg-luxury-grid {
+  background-image:
+    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--color-gold-500) 8%, transparent), transparent 40%),
+    radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--color-emerald-500) 12%, transparent), transparent 45%);
+  background-color: var(--color-ink);
+}
+
+:root[data-theme="dark"] .bg-luxury-grid {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(197, 160, 60, 0.1), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(31, 122, 77, 0.25), transparent 45%),
+    linear-gradient(180deg, #061510 0%, #0a1f16 100%);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(circle, var(--color-border) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(90deg, var(--color-gold-300), var(--color-gold-500), var(--color-gold-300));
+  background-size: 200% auto;
+  background-position: 100% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* One sweep on entrance only - background-position isn't a compositor
+     property, so looping this forever (as it did before) forces a paint on
+     every single frame for as long as the page stays open. Playing once
+     also matches "no automatic animation unrelated to scrolling". */
+  animation: gold-shimmer 1.4s ease-out 0.5s both;
+}
+
+@keyframes gold-shimmer {
+  from { background-position: 0% center; }
+  to { background-position: 100% center; }
+}
+
+/* Hero title: each phrase cascades in on its own, distinct from the plain
+   fade the rest of the page uses via .reveal. */
+.hero-title-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(18px) scale(0.96);
+  animation: hero-title-in 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hero-title-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-luxury {
+  background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+/* Scroll-reveal (JS toggles .is-visible via IntersectionObserver) - the
+   distance and scale dip are deliberately large enough to be unmistakable,
+   not a subtle nuance you have to look closely to notice. */
+.reveal {
+  opacity: 0;
+  transform: translateY(44px) scale(0.96);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Cards get their shadow only once their .reveal wrapper has arrived on
+   screen, so the shadow visibly grows in alongside the fade instead of
+   just sitting there from the first paint. */
+.reveal .card-luxury {
+  box-shadow: none;
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out, box-shadow 1s ease-out 0.15s;
+}
+
+.reveal.is-visible .card-luxury {
+  box-shadow: var(--shadow-card);
+}
+
+/* Escape hatch: content already on screen at first paint shows its final
+   state immediately, with no transition played at all - only content the
+   user actually scrolls to should visibly animate in. */
+.reveal.reveal-no-anim,
+.reveal.reveal-no-anim .card-luxury {
+  transition: none !important;
+}
+
+/* Algeria watermark: fades/scales in once, then breathes gently a few
+   times and stops - not a forever-loop, so it doesn't keep costing paint
+   work for as long as the tab stays open. Transform-only, so what runs is
+   compositor-cheap. */
+.algeria-map {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 1.8s ease-out, transform 1.8s ease-out;
+}
+
+.algeria-map.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  animation: algeria-breathe 8s ease-in-out 1.8s 3;
+}
+
+.algeria-map.no-anim {
+  transition: none;
+  transform: scale(1);
+  animation: algeria-breathe 8s ease-in-out 0.3s 3;
+}
+
+@keyframes algeria-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-gold {
+    animation: none;
+    background-position: 0% center;
+  }
+
+  .hero-title-word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .algeria-map,
+  .algeria-map.is-visible,
+  .algeria-map.no-anim {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+
+  .reveal,
+  .reveal.reveal-no-anim {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
