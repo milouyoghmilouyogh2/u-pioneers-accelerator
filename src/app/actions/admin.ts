@@ -171,3 +171,19 @@ export async function createUser(formData: FormData) {
   revalidatePath("/admin/users");
   return { success: true };
 }
+
+export async function changeUserPassword(userId: string, newPassword: string) {
+  await requireAdmin();
+
+  if (!newPassword || newPassword.length < 8) {
+    return { error: "كلمة المرور يجب أن تتكون من 8 خانات على الأقل." };
+  }
+
+  const admin = getAdminClient();
+  const { error } = await admin.auth.admin.updateUserById(userId, {
+    password: newPassword,
+  });
+
+  if (error) return { error: error.message };
+  return { success: true };
+}

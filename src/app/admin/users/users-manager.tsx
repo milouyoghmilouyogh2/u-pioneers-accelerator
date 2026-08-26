@@ -2,12 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { UserPlus, Shield, User } from "lucide-react";
+import { UserPlus, Shield, User, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Select } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/providers/toast-provider";
-import { createUser } from "@/app/actions/admin";
+import { createUser, changeUserPassword } from "@/app/actions/admin";
 
 type UserData = {
   id: string;
@@ -20,6 +20,8 @@ type UserData = {
 export function UsersManager({ users }: { users: UserData[] }) {
   const [pending, startTransition] = useTransition();
   const [showForm, setShowForm] = useState(false);
+  const [passwordModal, setPasswordModal] = useState<string | null>(null);
+  const [newPassword, setNewPassword] = useState("");
   const { showToast } = useToast();
   const router = useRouter();
 
@@ -33,6 +35,20 @@ export function UsersManager({ users }: { users: UserData[] }) {
       showToast("تم إنشاء المستخدم بنجاح!", "success");
       setShowForm(false);
       router.refresh();
+    });
+  }
+
+  function handleChangePassword() {
+    if (!passwordModal || !newPassword) return;
+    startTransition(async () => {
+      const result = await changeUserPassword(passwordModal, newPassword);
+      if (result?.error) {
+        showToast(result.error, "error");
+        return;
+      }
+      showToast("تم تغيير كلمة المرور بنجاح!", "success");
+      setPasswordModal(null);
+      setNewPassword("");
     });
   }
 
@@ -101,6 +117,7 @@ export function UsersManager({ users }: { users: UserData[] }) {
                 <th className="px-6 py-3 text-start font-medium">البريد</th>
                 <th className="px-6 py-3 text-start font-medium">الدور</th>
                 <th className="px-6 py-3 text-start font-medium">تاريخ الإنشاء</th>
+                <th className="px-6 py-3 text-start font-medium">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -125,12 +142,62 @@ export function UsersManager({ users }: { users: UserData[] }) {
                   <td className="px-6 py-3 text-muted">
                     {new Date(u.created_at).toLocaleDateString("ar-DZ")}
                   </td>
+                  <td className="px-6 py-3">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setPasswordModal(u.id)}
+                    >
+                      <Key className="size-3.5" /> تغيير كلمة المرور
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Password Change Modal */}
+      {passwordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="card-luxury mx-4 w-full max-w-md rounded-2xl p-6">
+            <h2 className="mb-4 text-lg font-semibold text-cream">
+              تغيير كلمة المرور
+            </h2>
+            <p className="mb-4 text-sm text-muted">
+              المستخدم: {users.find((u) => u.id === passwordModal)?.email}
+            </p>
+            <Field label="كلمة المرور الجديدة" hint="8 خانات على الأقل">
+              <Input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={8}
+                autoFocus
+              />
+            </Field>
+            <div className="mt-4 flex gap-3">
+              <Button
+                onClick={handleChangePassword}
+                disabled={pending || newPassword.length < 8}
+              >
+                {pending ? "جارٍ الحفظ..." : "حفظ كلمة المرور"}
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setPasswordModal(null);
+                  setNewPassword("");
+                }}
+              >
+                إلغاء
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
