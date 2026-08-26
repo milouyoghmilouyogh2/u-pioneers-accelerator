@@ -4,6 +4,7 @@ import {
   Award,
   CreditCard,
   LifeBuoy,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 
@@ -23,6 +24,7 @@ export const DASHBOARD_NAV_ITEMS: NavItem[] = [
 
 export const ADMIN_NAV_ITEMS: NavItem[] = [
   { href: "/admin", label: "نظرة عامة", icon: LayoutDashboard },
+  { href: "/admin/users", label: "المستخدمون", icon: Users },
   { href: "/admin/weapons", label: "محتوى الأسلحة", icon: Swords },
   { href: "/admin/payments", label: "طلبات الدفع", icon: CreditCard },
   { href: "/admin/tickets", label: "طلبات الدعم", icon: LifeBuoy },
