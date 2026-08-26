@@ -6,20 +6,33 @@ export default async function AdminPaymentsPage() {
 
   const { data: requests } = await supabase
     .from("payment_requests")
-    .select(
-      "*, startups!payment_requests_startup_id_fkey(project_title, profiles!startups_owner_id_fkey(full_name))"
-    )
+    .select("*")
     .order("created_at", { ascending: false });
+
+  // Get startups and profiles separately to avoid JOIN issues
+  const { data: startups } = await supabase
+    .from("startups")
+    .select("id, project_title, owner_id");
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, full_name");
+
+  const startupMap = new Map(startups?.map((s) => [s.id, s]) ?? []);
+  const profileMap = new Map(profiles?.map((p) => [p.id, p]) ?? []);
 
   const withUrls = await Promise.all(
     (requests ?? []).map(async (r) => {
       const { data } = await supabase.storage
         .from("receipts")
         .createSignedUrl(r.receipt_path, 600);
+      const startup = startupMap.get(r.startup_id);
+      const profile = startup ? profileMap.get(startup.owner_id) : null;
       return {
         ...r,
         receiptUrl: data?.signedUrl ?? null,
         isPdf: r.receipt_path.toLowerCase().endsWith(".pdf"),
+        studentName: profile?.full_name ?? "—",
+        projectTitle: startup?.project_title ?? "—",
       };
     })
   );
@@ -51,14 +64,8 @@ export default async function AdminPaymentsPage() {
             <PaymentRequestRow
               key={r.id}
               id={r.id}
-              studentName={
-                (r as unknown as { startups: { profiles: { full_name: string } } })
-                  .startups?.profiles?.full_name ?? "—"
-              }
-              projectTitle={
-                (r as unknown as { startups: { project_title: string } }).startups
-                  ?.project_title ?? "—"
-              }
+              studentName={r.studentName}
+              projectTitle={r.projectTitle}
               status={r.status}
               createdAt={r.created_at}
               receiptUrl={r.receiptUrl}
@@ -77,14 +84,8 @@ export default async function AdminPaymentsPage() {
             <PaymentRequestRow
               key={r.id}
               id={r.id}
-              studentName={
-                (r as unknown as { startups: { profiles: { full_name: string } } })
-                  .startups?.profiles?.full_name ?? "—"
-              }
-              projectTitle={
-                (r as unknown as { startups: { project_title: string } }).startups
-                  ?.project_title ?? "—"
-              }
+              studentName={r.studentName}
+              projectTitle={r.projectTitle}
               status={r.status}
               createdAt={r.created_at}
               receiptUrl={r.receiptUrl}
