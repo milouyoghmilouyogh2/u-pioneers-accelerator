@@ -44,7 +44,7 @@ export default async function LandingPage() {
 
           <Reveal className="relative mx-auto max-w-4xl text-center">
             <Badge tone="gold" className="mx-auto">
-              <ShieldCheck className="size-3.5" /> حاضنة ومسرعة أعمال رقمية معتمدة
+              <ShieldCheck className="size-3.5" /> مسرعة أعمال رقمية
             </Badge>
             <h1 className="mt-6 text-4xl font-extrabold leading-tight text-cream sm:text-5xl md:text-6xl">
               <span className="hero-title-word" style={{ animationDelay: "0ms" }}>

@@ -16,7 +16,7 @@ export async function Footer() {
             <span className="text-lg font-bold text-cream">U-Pioneers</span>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            حاضنة ومسرعة أعمال رقمية معتمدة، متوافقة كلياً مع القرار الوزاري
+            مسرعة أعمال رقمية، متوافقة كلياً مع القرار الوزاري
             1275 لمرافقة مشاريع التخرج الابتكارية لطلبة الجامعات الجزائرية.
           </p>
         </div>
