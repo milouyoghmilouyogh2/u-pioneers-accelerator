@@ -20,16 +20,38 @@ export function TeamSection() {
             عن قرب، ومتحمّس لمرافقتك من الفكرة الأولى حتى الحصول على وسم
             &quot;مشروع مبتكر&quot; وفق القرار الوزاري 1275.
           </p>
+
+          {/* Caption under text on PC */}
+          <div className="mt-6 hidden md:block">
+            <p className="text-lg font-bold text-cream">هيثم مواقي</p>
+            <p className="text-sm text-gold-500">المؤسس والمدير التنفيذي</p>
+            <p className="mt-1 text-xs text-muted">
+              <span className="font-semibold text-cream">U-Pioneers</span>{" "}
+              Digital Accelerator
+            </p>
+          </div>
         </Reveal>
+
         <Reveal delay={120}>
           <div className="card-luxury overflow-hidden rounded-2xl p-4">
-            <Image
-              src={teamPhoto}
-              alt="فريق U-Pioneers"
-              className="w-full rounded-xl object-cover"
-              placeholder="blur"
-              sizes="(min-width: 768px) 480px, 100vw"
-            />
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl">
+              <Image
+                src={teamPhoto}
+                alt="هيثم مواقي - المؤسس والمدير التنفيذي"
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 480px, 100vw"
+              />
+            </div>
+            {/* Caption under image on mobile */}
+            <div className="mt-4 text-center md:hidden">
+              <p className="text-lg font-bold text-cream">هيثم مواقي</p>
+              <p className="text-sm text-gold-500">المؤسس والمدير التنفيذي</p>
+              <p className="mt-1 text-xs text-muted">
+                <span className="font-semibold text-cream">U-Pioneers</span>{" "}
+                Digital Accelerator
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>
