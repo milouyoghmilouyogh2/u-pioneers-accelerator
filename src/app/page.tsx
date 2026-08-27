@@ -64,7 +64,7 @@ export default async function LandingPage() {
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-cream-dim sm:text-lg">
               مساحة العمل التفاعلية الاحترافية لقيادة وتتبع مشاريع التخرج
               الابتكارية لطلبة الجامعات الجزائرية، خطوة بخطوة، متوافقة كلياً
-              مع القرار الوزاري 1275 للحصول على وسم &quot;مؤسسة ناشئة&quot;.
+              مع القرار الوزاري 1275 للحصول على وسم &quot;مشروع مبتكر&quot;.
             </p>
             <p className="mt-3 text-sm font-medium text-gold-500">
               من كل ولاية، لتحقيق هدف واحد.
@@ -98,7 +98,7 @@ export default async function LandingPage() {
             <Reveal>
               <Badge tone="emerald">القرار الوزاري 1275</Badge>
               <h2 className="mt-4 text-2xl font-bold text-cream sm:text-3xl">
-                لماذا يهم وسم &quot;مؤسسة ناشئة&quot;؟
+                لماذا يهم وسم &quot;مشروع مبتكر&quot;؟
               </h2>
               <p className="mt-4 leading-relaxed text-cream-dim">
                 القرار الوزاري 1275 يوفر إطاراً استثنائياً للطلبة حاملي

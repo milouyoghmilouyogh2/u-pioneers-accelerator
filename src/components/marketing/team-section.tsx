@@ -18,7 +18,7 @@ export function TeamSection() {
           <p className="mt-4 leading-relaxed text-cream-dim">
             وراء كل خطوة في مسار U-Pioneers فريق يعرف واقع الجامعة الجزائرية
             عن قرب، ومتحمّس لمرافقتك من الفكرة الأولى حتى الحصول على وسم
-            &quot;مؤسسة ناشئة&quot; وفق القرار الوزاري 1275.
+            &quot;مشروع مبتكر&quot; وفق القرار الوزاري 1275.
           </p>
         </Reveal>
         <Reveal delay={120}>
