@@ -45,13 +45,14 @@ export default async function GraduationPage() {
       </div>
 
       <div className="print:hidden">
-        <CertificateCanvas studentName={profile.full_name} projectTitle={startup.project_title} />
+        <CertificateCanvas studentName={profile.full_name} projectTitle={startup.project_title} isPremium={startup.is_premium} />
       </div>
 
       <ExecutiveSummary
         projectTitle={startup.project_title}
         weapons={weapons}
         answers={answersMap}
+        isPremium={startup.is_premium}
       />
     </div>
   );

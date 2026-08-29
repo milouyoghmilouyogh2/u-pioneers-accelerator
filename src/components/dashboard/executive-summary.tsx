@@ -1,23 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import { Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PaywallPopup } from "./paywall-popup";
 import type { Tables } from "@/lib/supabase/database.types";
 
 export function ExecutiveSummary({
   projectTitle,
   weapons,
   answers,
+  isPremium,
 }: {
   projectTitle: string;
   weapons: Tables<"weapons">[];
   answers: Record<number, string>;
+  isPremium: boolean;
 }) {
+  const [showPaywall, setShowPaywall] = useState(false);
+
+  function handlePrint() {
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
+    window.print();
+  }
+
   return (
     <div className="card-luxury rounded-2xl p-6 sm:p-8 print:border-0 print:bg-white print:text-black print:shadow-none">
+      <PaywallPopup open={showPaywall} onClose={() => setShowPaywall(false)} />
       <div className="flex items-center justify-between print:hidden">
         <h2 className="text-lg font-bold text-cream">الملخص التنفيذي للمشروع</h2>
-        <Button variant="secondary" size="sm" onClick={() => window.print()}>
+        <Button variant="secondary" size="sm" onClick={handlePrint}>
           <Printer className="size-4" /> طباعة / حفظ كـ PDF
         </Button>
       </div>

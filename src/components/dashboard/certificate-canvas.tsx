@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PaywallPopup } from "./paywall-popup";
 
 export function CertificateCanvas({
   studentName,
   projectTitle,
+  isPremium,
 }: {
   studentName: string;
   projectTitle: string;
+  isPremium: boolean;
 }) {
+  const [showPaywall, setShowPaywall] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -111,6 +115,10 @@ export function CertificateCanvas({
   }, [studentName, projectTitle]);
 
   function download() {
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     const canvas = canvasRef.current;
     if (!canvas) return;
     const url = canvas.toDataURL("image/png");
@@ -122,6 +130,7 @@ export function CertificateCanvas({
 
   return (
     <div className="flex flex-col items-center gap-4">
+      <PaywallPopup open={showPaywall} onClose={() => setShowPaywall(false)} />
       <canvas
         ref={canvasRef}
         className="w-full max-w-2xl rounded-xl border border-gold-500/30 shadow-2xl"
