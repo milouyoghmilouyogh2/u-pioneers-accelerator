@@ -19,7 +19,10 @@ export const metadata: Metadata = {
     "مسرعة أعمال رقمية لمرافقة مشاريع التخرج الابتكارية لطلبة الجامعات الجزائرية وفق القرار الوزاري 1275.",
   metadataBase: new URL("https://u-pioneers-accelerator.vercel.app"),
   icons: {
-    icon: "/icons/icon-512.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
     apple: "/icons/icon-512.png",
   },
   appleWebApp: {
