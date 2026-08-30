@@ -4,6 +4,7 @@ import { Cairo } from "next/font/google";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { ThemeProvider, NO_FLASH_THEME_SCRIPT } from "@/components/providers/theme-provider";
 import { PublicMobileNav } from "@/components/marketing/public-mobile-nav";
+import { InstallBanner } from "@/components/ui/install-banner";
 import { getUser } from "@/lib/dal";
 import "./globals.css";
 
@@ -81,6 +82,7 @@ export default async function RootLayout({
           <ToastProvider>
             {children}
             <PublicMobileNav isLoggedIn={!!user} />
+            <InstallBanner />
           </ToastProvider>
         </ThemeProvider>
       </body>
