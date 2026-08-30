@@ -23,10 +23,10 @@ export function CopyRip({ rip }: { rip: string }) {
         navigator.clipboard.writeText(rip);
         showToast("تم نسخ رقم RIP الخاص بالمسرعة بنجاح!", "success");
       }}
-      className="flex w-full items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 text-start"
+      className="flex w-full items-center justify-between gap-3 rounded-lg border border-border bg-surface px-4 py-3 text-start"
     >
-      <span className="font-mono text-sm tracking-wider text-cream">{rip}</span>
-      <Copy className="size-4 text-gold-400" />
+      <span className="min-w-0 flex-1 break-all font-mono text-xs tracking-wider text-cream sm:text-sm">{rip}</span>
+      <Copy className="size-4 shrink-0 text-gold-400" />
     </button>
   );
 }
