@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Printer } from "lucide-react";
+import { Printer, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PaywallPopup } from "./paywall-popup";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -44,7 +44,7 @@ export function ExecutiveSummary({
         وفق مسار الأسلحة الـ16 — مسرعة U-Pioneers، متوافق مع القرار الوزاري 1275
       </p>
 
-      <div className="mt-6 flex flex-col gap-5">
+      <div className={`mt-6 flex flex-col gap-5 ${!isPremium ? "max-h-40 overflow-hidden relative" : ""}`}>
         {weapons.map((w) => (
           <div key={w.number} className="border-b border-border pb-4 last:border-0 print:border-gray-200">
             <p className="text-xs font-bold text-gold-500 print:text-gray-500">
@@ -55,6 +55,18 @@ export function ExecutiveSummary({
             </p>
           </div>
         ))}
+
+        {!isPremium && (
+          <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-gradient-to-t from-surface via-surface/95 to-transparent pt-16 pb-4 print:hidden">
+            <div
+              onClick={() => setShowPaywall(true)}
+              className="flex size-12 cursor-pointer items-center justify-center rounded-xl bg-gold-500/15 border border-gold-500/30 transition hover:scale-105 hover:bg-gold-500/25"
+            >
+              <Lock className="size-5 text-gold-500" />
+            </div>
+            <p className="mt-2 text-xs font-semibold text-cream">اشترك لفتح الملف</p>
+          </div>
+        )}
       </div>
     </div>
   );

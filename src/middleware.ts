@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 const AUTH_PAGES = ["/login", "/register"];
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // CSRF protection: verify Origin header on POST requests
   if (request.method === "POST") {
     const origin = request.headers.get("origin");

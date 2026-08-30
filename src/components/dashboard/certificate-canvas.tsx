@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Download } from "lucide-react";
+import { Download, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PaywallPopup } from "./paywall-popup";
 
@@ -131,12 +131,27 @@ export function CertificateCanvas({
   return (
     <div className="flex flex-col items-center gap-4">
       <PaywallPopup open={showPaywall} onClose={() => setShowPaywall(false)} />
-      <canvas
-        ref={canvasRef}
-        className="w-full max-w-2xl rounded-xl border border-gold-500/30 shadow-2xl"
-      />
+      <div className="relative">
+        <canvas
+          ref={canvasRef}
+          className="w-full max-w-2xl rounded-xl border border-gold-500/30 shadow-2xl"
+        />
+        {!isPremium && (
+          <div
+            onClick={() => setShowPaywall(true)}
+            className="absolute top-4 left-4 flex cursor-pointer items-center gap-2 rounded-lg bg-black/50 px-3 py-2 backdrop-blur-sm transition hover:bg-black/70"
+          >
+            <Lock className="size-4 text-gold-400" />
+            <span className="text-xs font-semibold text-white">مقفل</span>
+          </div>
+        )}
+      </div>
       <Button onClick={download}>
-        <Download className="size-4" /> تحميل الشهادة
+        {isPremium ? (
+          <><Download className="size-4" /> تحميل الشهادة</>
+        ) : (
+          <><Lock className="size-4" /> تحميل الشهادة</>
+        )}
       </Button>
     </div>
   );
