@@ -122,10 +122,31 @@ export function CertificateCanvas({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const url = canvas.toDataURL("image/png");
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `شهادة-${studentName}.png`;
-    a.click();
+
+    // Mobile-compatible download
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // On mobile, open in new tab so user can long-press to save
+      const win = window.open(url, "_blank");
+      if (!win) {
+        // Fallback: create visible link
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    } else {
+      // Desktop: direct download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `شهادة-${studentName}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   }
 
   return (
