@@ -22,22 +22,36 @@ export function usePwaInstall() {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      // Show after 3 seconds
       setTimeout(() => setShowInstall(true), 3000);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+
+    // Test mode: show banner after 5s even without event (for dev/testing)
+    const testTimer = setTimeout(() => {
+      if (!dismissed && !window.matchMedia("(display-mode: standalone)").matches) {
+        setShowInstall(true);
+      }
+    }, 5000);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+      clearTimeout(testTimer);
+    };
   }, []);
 
   async function install() {
-    if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setShowInstall(false);
+    if (deferredPrompt) {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        setShowInstall(false);
+        setDeferredPrompt(null);
+        return;
+      }
     }
-    setDeferredPrompt(null);
+    // If no deferredPrompt (test mode), just close
+    setShowInstall(false);
   }
 
   function dismiss() {
