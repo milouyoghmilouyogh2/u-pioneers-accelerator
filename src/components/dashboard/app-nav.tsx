@@ -51,12 +51,12 @@ export function MobileTabBar({ variant }: { variant: Variant }) {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px]",
+              "flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] leading-tight min-w-0",
               active ? "text-gold-500" : "text-cream-dim"
             )}
           >
-            <item.icon className="size-5" />
-            {item.label}
+            <item.icon className="size-4 shrink-0" />
+            <span className="truncate w-full text-center">{item.label}</span>
           </Link>
         );
       })}

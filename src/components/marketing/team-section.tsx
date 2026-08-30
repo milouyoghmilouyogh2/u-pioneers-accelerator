@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Users } from "lucide-react";
+import Link from "next/link";
+import { Users, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import teamPhoto from "../../../public/images/team.webp";
@@ -30,6 +31,15 @@ export function TeamSection() {
               Digital Accelerator
             </p>
           </div>
+
+          {/* About Us button */}
+          <Link
+            href="/aboutus"
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gold-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-gold-600 hover:shadow-xl active:scale-95"
+          >
+            تعرف علينا أكثر
+            <ArrowLeft className="size-4" />
+          </Link>
         </Reveal>
 
         <Reveal delay={120}>

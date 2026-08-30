@@ -12,6 +12,77 @@ export type Database = {
   }
   public: {
     Tables: {
+      team_members: {
+        Row: {
+          id: string
+          name: string
+          role: string
+          description: string | null
+          image_url: string | null
+          sort_order: number
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          role: string
+          description?: string | null
+          image_url?: string | null
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          role?: string
+          description?: string | null
+          image_url?: string | null
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_member_links: {
+        Row: {
+          id: string
+          team_member_id: string
+          platform: string
+          url: string
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          team_member_id: string
+          platform: string
+          url: string
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          team_member_id?: string
+          platform?: string
+          url?: string
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_member_links_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       payment_requests: {
         Row: {
           admin_note: string | null

@@ -7,6 +7,7 @@ import { MobileMenu } from "./mobile-menu";
 
 const LINKS = [
   { href: "/#process", label: "المسار" },
+  { href: "/aboutus", label: "من نحن" },
   { href: "/leaderboard", label: "لوحة الصدارة" },
   { href: "/b2b", label: "شركاء ودعم" },
   { href: "/terms", label: "شروط الاستخدام" },

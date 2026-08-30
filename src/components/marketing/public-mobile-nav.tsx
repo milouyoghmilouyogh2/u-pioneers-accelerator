@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Trophy, LifeBuoy, LayoutDashboard, LogIn } from "lucide-react";
+import { Home, Trophy, LifeBuoy, LayoutDashboard, LogIn, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function PublicMobileNav({ isLoggedIn }: { isLoggedIn: boolean }) {
@@ -15,6 +15,7 @@ export function PublicMobileNav({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   const items = [
     { href: "/", label: "الرئيسية", icon: Home },
+    { href: "/aboutus", label: "من نحن", icon: Users },
     { href: "/leaderboard", label: "الصدارة", icon: Trophy },
     { href: "/b2b", label: "الدعم", icon: LifeBuoy },
     isLoggedIn
