@@ -36,11 +36,11 @@ export function PublicMobileNav({ isLoggedIn }: { isLoggedIn: boolean }) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px]",
+                "flex flex-1 flex-col items-center gap-1 py-3 text-[11px]",
                 active ? "text-gold-500" : "text-cream-dim"
               )}
             >
-              <item.icon className="size-5" />
+              <item.icon className="size-5.5" />
               {item.label}
             </Link>
           );
