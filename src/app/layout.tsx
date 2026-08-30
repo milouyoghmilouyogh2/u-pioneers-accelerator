@@ -70,6 +70,19 @@ export default async function RootLayout({
         <noscript>
           <style>{".reveal{opacity:1!important;transform:none!important}"}</style>
         </noscript>
+        {/* Register Service Worker for PWA */}
+        <Script
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
         {/* Plausible Analytics — privacy-friendly, no cookies */}
         <Script
           defer
