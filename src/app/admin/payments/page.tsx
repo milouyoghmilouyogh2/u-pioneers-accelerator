@@ -1,7 +1,9 @@
+import { requireAdmin } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { PaymentRequestRow } from "@/components/admin/payment-request-row";
 
 export default async function AdminPaymentsPage() {
+  await requireAdmin();
   const supabase = await createClient();
 
   const { data: requests } = await supabase

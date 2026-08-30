@@ -1,7 +1,9 @@
+import { requireAdmin } from "@/lib/dal";
 import { getWeapons } from "@/lib/dal";
 import { WeaponsCmsEditor } from "@/components/admin/weapons-cms-editor";
 
 export default async function AdminWeaponsPage() {
+  await requireAdmin();
   const weapons = await getWeapons();
 
   return (

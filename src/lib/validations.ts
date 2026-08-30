@@ -16,7 +16,10 @@ export const signUpSchema = z.object({
   whatsapp: z.string().min(1, "الرجاء إدخال رقم الواتساب").max(20),
   project_title: z.string().min(1, "الرجاء إدخال عنوان المشروع").max(200),
   email: z.string().email("البريد الإلكتروني غير صحيح"),
-  password: z.string().min(8, "كلمة المرور يجب أن تتكون من 8 خانات على الأقل"),
+  password: z.string()
+    .min(8, "كلمة المرور يجب أن تتكون من 8 خانات على الأقل")
+    .regex(/[A-Z]/, "كلمة المرور يجب أن تحتوي على حرف كبير واحد على الأقل")
+    .regex(/[0-9]/, "كلمة المرور يجب أن تحتوي على رقم واحد على الأقل"),
 });
 
 export const signInSchema = z.object({
@@ -29,7 +32,10 @@ export const passwordResetSchema = z.object({
 });
 
 export const updatePasswordSchema = z.object({
-  password: z.string().min(8, "كلمة المرور يجب أن تتكون من 8 خانات على الأقل"),
+  password: z.string()
+    .min(8, "كلمة المرور يجب أن تتكون من 8 خانات على الأقل")
+    .regex(/[A-Z]/, "كلمة المرور يجب أن تحتوي على حرف كبير واحد على الأقل")
+    .regex(/[0-9]/, "كلمة المرور يجب أن تحتوي على رقم واحد على الأقل"),
 });
 
 // Weapon answer

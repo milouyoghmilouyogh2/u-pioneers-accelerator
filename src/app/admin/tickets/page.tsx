@@ -1,7 +1,9 @@
+import { requireAdmin } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { TicketRow } from "@/components/admin/ticket-row";
 
 export default async function AdminTicketsPage() {
+  await requireAdmin();
   const supabase = await createClient();
   const { data: tickets } = await supabase
     .from("support_tickets")

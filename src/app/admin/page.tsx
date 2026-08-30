@@ -1,8 +1,10 @@
+import { requireAdmin } from "@/lib/dal";
 import { Users, TrendingUp, CreditCard, LifeBuoy } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/badge";
 
 export default async function AdminOverviewPage() {
+  await requireAdmin();
   const supabase = await createClient();
 
   const [{ data: startups }, { count: pendingPayments }, { count: openTickets }] =

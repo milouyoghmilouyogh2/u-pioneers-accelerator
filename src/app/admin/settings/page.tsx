@@ -1,7 +1,9 @@
+import { requireAdmin } from "@/lib/dal";
 import { getSetting } from "@/lib/dal";
 import { SettingField } from "@/components/admin/settings-form";
 
 export default async function AdminSettingsPage() {
+  await requireAdmin();
   const [waLink, organizerNumber, rip] = await Promise.all([
     getSetting("whatsapp_group_link"),
     getSetting("organizer_whatsapp_number"),

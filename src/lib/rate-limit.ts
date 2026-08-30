@@ -7,12 +7,17 @@
 const store = new Map<string, { count: number; resetAt: number }>();
 
 // Clean up expired entries every 5 minutes
-setInterval(() => {
+const cleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [key, value] of store) {
     if (now > value.resetAt) store.delete(key);
   }
 }, 5 * 60 * 1000);
+
+// Prevent memory leak in serverless
+if (typeof cleanupInterval === "object" && cleanupInterval.unref) {
+  cleanupInterval.unref();
+}
 
 interface RateLimitConfig {
   /** Unique key (e.g. IP + action name) */
@@ -51,11 +56,9 @@ export function checkRateLimit({
 }
 
 /**
- * Get client IP from request headers (Vercel forwards real IP via x-forwarded-for).
- * Falls back to a generic key if IP isn't available.
+ * Generate a rate limit key for a specific action.
+ * Uses action name + user identifier when available.
  */
-export function getClientIp(): string {
-  // In server actions, we can't access headers directly.
-  // Use a session-level key instead (all requests from same server instance share memory).
-  return "global";
+export function getRateLimitKey(action: string, identifier?: string): string {
+  return identifier ? `${action}:${identifier}` : action;
 }
