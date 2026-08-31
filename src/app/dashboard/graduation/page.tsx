@@ -2,7 +2,7 @@ import { Lock } from "lucide-react";
 import { getAnswers, getProfile, getStartup, getWeapons } from "@/lib/dal";
 import { CertificateCanvas } from "@/components/dashboard/certificate-canvas";
 import { LockedCertificate } from "@/components/dashboard/locked-certificate";
-import { ExecutiveSummary } from "@/components/dashboard/executive-summary";
+import { PremiumPdf } from "@/components/dashboard/premium-pdf";
 import { ButtonLink } from "@/components/ui/button";
 
 export default async function GraduationPage() {
@@ -53,10 +53,13 @@ export default async function GraduationPage() {
         )}
       </div>
 
-      <ExecutiveSummary
+      <PremiumPdf
+        studentName={profile.full_name}
         projectTitle={startup.project_title}
+        university={profile.university}
+        major={profile.major}
         weapons={weapons}
-        answers={startup.is_premium ? answersMap : {}}
+        answers={answersMap}
         isPremium={startup.is_premium}
       />
     </div>

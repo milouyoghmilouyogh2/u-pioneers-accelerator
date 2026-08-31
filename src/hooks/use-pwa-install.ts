@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -11,36 +11,43 @@ export function usePwaInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstall, setShowInstall] = useState(false);
 
-  useEffect(() => {
-    // Check if user already dismissed
-    const dismissed = localStorage.getItem("pwa-install-dismissed");
-    if (dismissed) return;
-
-    // Check if already installed
+  const checkAndShow = useCallback(() => {
+    // Don't show if already installed
     if (window.matchMedia("(display-mode: standalone)").matches) return;
+    setShowInstall(true);
+  }, []);
 
+  useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setTimeout(() => setShowInstall(true), 3000);
+      // Show our custom banner immediately when browser prompt appears
+      setTimeout(() => setShowInstall(true), 500);
+    };
+
+    // When user clicks "Annuler" on browser prompt, userChoice fires with "dismissed"
+    const dismissedHandler = (e: Event) => {
+      const event = e as BeforeInstallPromptEvent;
+      event.userChoice.then((result) => {
+        if (result.outcome === "dismissed") {
+          // Show our custom banner immediately
+          setTimeout(() => setShowInstall(true), 300);
+        }
+      });
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Test mode: show banner after 5s even without event (dev only)
+    // Dev mode: show banner after 5s
     const testTimer = process.env.NODE_ENV === "development"
-      ? setTimeout(() => {
-          if (!dismissed && !window.matchMedia("(display-mode: standalone)").matches) {
-            setShowInstall(true);
-          }
-        }, 5000)
+      ? setTimeout(checkAndShow, 5000)
       : undefined;
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
-      clearTimeout(testTimer);
+      if (testTimer) clearTimeout(testTimer);
     };
-  }, []);
+  }, [checkAndShow]);
 
   async function install() {
     if (deferredPrompt) {
@@ -51,15 +58,14 @@ export function usePwaInstall() {
         setDeferredPrompt(null);
         return;
       }
+      // If dismissed again, keep showing
+      setTimeout(() => setShowInstall(true), 500);
+    } else {
+      // No deferred prompt — close and retry later
+      setShowInstall(false);
+      setTimeout(checkAndShow, 2000);
     }
-    // If no deferredPrompt (test mode), just close
-    setShowInstall(false);
   }
 
-  function dismiss() {
-    setShowInstall(false);
-    localStorage.setItem("pwa-install-dismissed", "true");
-  }
-
-  return { showInstall, install, dismiss };
+  return { showInstall, install };
 }
