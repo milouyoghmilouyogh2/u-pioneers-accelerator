@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/providers/toast-provider";
 import { ThemeProvider, NO_FLASH_THEME_SCRIPT } from "@/components/providers/theme-provider";
 import { PublicMobileNav } from "@/components/marketing/public-mobile-nav";
 import { InstallBanner } from "@/components/ui/install-banner";
+import { CookieConsent } from "@/components/ui/cookie-consent";
 import { getUser } from "@/lib/dal";
 import "./globals.css";
 
@@ -96,6 +97,7 @@ export default async function RootLayout({
             {children}
             <PublicMobileNav isLoggedIn={!!user} />
             <InstallBanner />
+            <CookieConsent />
           </ToastProvider>
         </ThemeProvider>
       </body>

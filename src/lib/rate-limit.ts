@@ -62,3 +62,12 @@ export function checkRateLimit({
 export function getRateLimitKey(action: string, identifier?: string): string {
   return identifier ? `${action}:${identifier}` : action;
 }
+
+/**
+ * Get client IP from request headers.
+ * In server actions we cannot access headers directly,
+ * so we use a per-email key instead.
+ */
+export function getClientKey(action: string, email?: string): string {
+  return email ? `${action}:${email}` : action;
+}

@@ -2,6 +2,15 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { validate } from "@/lib/validations";
+import { z } from "zod";
+
+const onboardingSchema = z.object({
+  university: z.string().min(1, "الرجاء اختيار الجامعة").max(200),
+  major: z.string().min(1, "الرجاء إدخال التخصص").max(100),
+  whatsapp: z.string().min(1, "الرجاء إدخال رقم الواتساب").max(20),
+  project_title: z.string().min(1, "الرجاء إدخال عنوان المشروع").max(200),
+});
 
 export type OnboardingState = { error?: string } | undefined;
 
@@ -9,14 +18,15 @@ export async function completeOnboarding(
   _prevState: OnboardingState,
   formData: FormData
 ): Promise<OnboardingState> {
-  const university = String(formData.get("university") || "").trim();
-  const major = String(formData.get("major") || "").trim();
-  const whatsapp = String(formData.get("whatsapp") || "").trim();
-  const project_title = String(formData.get("project_title") || "").trim();
+  const parsed = validate(onboardingSchema, {
+    university: String(formData.get("university") || "").trim(),
+    major: String(formData.get("major") || "").trim(),
+    whatsapp: String(formData.get("whatsapp") || "").trim(),
+    project_title: String(formData.get("project_title") || "").trim(),
+  });
+  if (!parsed.success) return { error: parsed.error };
 
-  if (!university || !major || !whatsapp || !project_title) {
-    return { error: "الرجاء تعبئة جميع الحقول." };
-  }
+  const { university, major, whatsapp, project_title } = parsed.data;
 
   const supabase = await createClient();
   const {

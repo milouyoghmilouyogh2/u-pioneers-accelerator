@@ -27,12 +27,14 @@ export function usePwaInstall() {
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Test mode: show banner after 5s even without event (for dev/testing)
-    const testTimer = setTimeout(() => {
-      if (!dismissed && !window.matchMedia("(display-mode: standalone)").matches) {
-        setShowInstall(true);
-      }
-    }, 5000);
+    // Test mode: show banner after 5s even without event (dev only)
+    const testTimer = process.env.NODE_ENV === "development"
+      ? setTimeout(() => {
+          if (!dismissed && !window.matchMedia("(display-mode: standalone)").matches) {
+            setShowInstall(true);
+          }
+        }, 5000)
+      : undefined;
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);

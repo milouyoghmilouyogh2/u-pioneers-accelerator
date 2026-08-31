@@ -104,8 +104,10 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
   function addLink() {
     if (!newUrl.trim()) return;
     startTransition(async () => {
-      await addTeamMemberLink(member.id, newPlatform, newUrl.trim());
-      setLinks([...links, { id: "new-" + Date.now(), platform: newPlatform, url: newUrl.trim() }]);
+      const result = await addTeamMemberLink(member.id, newPlatform, newUrl.trim());
+      if (result?.link) {
+        setLinks([...links, result.link]);
+      }
       setNewUrl("");
     });
   }

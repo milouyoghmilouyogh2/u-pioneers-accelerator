@@ -25,7 +25,7 @@ export const getProfile = cache(async () => {
     .select("*")
     .eq("id", user.id)
     .single();
-  if (!data) redirect("/login");
+  if (!data) redirect("/onboarding");
   return data;
 });
 
@@ -43,7 +43,7 @@ export const getStartup = cache(async () => {
     .select("*")
     .eq("owner_id", user.id)
     .single();
-  if (!data) redirect("/login");
+  if (!data) redirect("/onboarding");
   return data;
 });
 

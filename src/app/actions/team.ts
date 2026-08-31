@@ -126,19 +126,21 @@ export async function addTeamMemberLink(memberId: string, platform: string, url:
     .limit(1)
     .single();
 
-  const { error } = await supabase
+  const { data: newLink, error } = await supabase
     .from("team_member_links")
     .insert({
       team_member_id: memberId,
       platform,
       url,
       sort_order: (maxOrder?.sort_order || 0) + 1,
-    });
+    })
+    .select()
+    .single();
 
   if (error) return { error: error.message };
   revalidatePath("/admin/settings");
   revalidatePath("/aboutus");
-  return { success: true };
+  return { success: true, link: newLink };
 }
 
 export async function updateTeamMemberLink(linkId: string, platform: string, url: string) {

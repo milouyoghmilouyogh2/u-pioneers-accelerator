@@ -39,8 +39,9 @@ export async function signUpAction(
   _prevState: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  // Rate limit: 3 signups per 10 minutes
-  const rl = checkRateLimit({ key: "signup", maxAttempts: 3, windowSeconds: 600 });
+  const email = String(formData.get("email") || "").trim();
+  // Rate limit: 3 signups per 10 minutes per email
+  const rl = checkRateLimit({ key: `signup:${email}`, maxAttempts: 3, windowSeconds: 600 });
   if (!rl.success) {
     return { error: `تم حظر المحاولة مؤقتاً. حاول مرة أخرى بعد ${rl.retryAfter} ثانية.` };
   }
@@ -57,7 +58,7 @@ export async function signUpAction(
   });
   if (!parsed.success) return { error: parsed.error };
 
-  const { full_name, university, major, whatsapp, project_title, email, password } = parsed.data;
+  const { full_name, university, major, whatsapp, project_title, password } = parsed.data;
 
   const supabase = await createClient();
 
@@ -91,8 +92,9 @@ export async function signInAction(
   _prevState: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  // Rate limit: 5 login attempts per 5 minutes
-  const rl = checkRateLimit({ key: "signin", maxAttempts: 5, windowSeconds: 300 });
+  const email = String(formData.get("email") || "").trim();
+  // Rate limit: 5 login attempts per 5 minutes per email
+  const rl = checkRateLimit({ key: `signin:${email}`, maxAttempts: 5, windowSeconds: 300 });
   if (!rl.success) {
     return { error: `تم حظر المحاولة مؤقتاً. حاول مرة أخرى بعد ${rl.retryAfter} ثانية.` };
   }
@@ -124,8 +126,9 @@ export async function requestPasswordResetAction(
   _prevState: AuthState,
   formData: FormData
 ): Promise<AuthState> {
-  // Rate limit: 3 reset requests per hour
-  const rl = checkRateLimit({ key: "password-reset", maxAttempts: 3, windowSeconds: 3600 });
+  const email = String(formData.get("email") || "").trim();
+  // Rate limit: 3 reset requests per hour per email
+  const rl = checkRateLimit({ key: `password-reset:${email}`, maxAttempts: 3, windowSeconds: 3600 });
   if (!rl.success) {
     return { error: `تم حظر المحاولة مؤقتاً. حاول مرة أخرى بعد ${Math.ceil(rl.retryAfter / 60)} دقيقة.` };
   }
