@@ -22,24 +22,21 @@ export function usePwaInstall() {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setTimeout(() => setShowInstall(true), 5000);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Dev mode: show banner after 5s
-    const testTimer = process.env.NODE_ENV === "development"
-      ? setTimeout(() => {
-          if (!localStorage.getItem("pwa-install-dismissed") &&
-              !window.matchMedia("(display-mode: standalone)").matches) {
-            setShowInstall(true);
-          }
-        }, 5000)
-      : undefined;
+    // Show banner after exactly 5 seconds
+    const timer = setTimeout(() => {
+      if (!localStorage.getItem("pwa-install-dismissed") &&
+          !window.matchMedia("(display-mode: standalone)").matches) {
+        setShowInstall(true);
+      }
+    }, 5000);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
-      if (testTimer) clearTimeout(testTimer);
+      clearTimeout(timer);
     };
   }, []);
 
