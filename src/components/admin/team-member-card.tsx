@@ -9,6 +9,7 @@ import {
   updateTeamMember,
   deleteTeamMember,
   addTeamMemberLink,
+  updateTeamMemberLink,
   deleteTeamMemberLink,
 } from "@/app/actions/team";
 
@@ -58,7 +59,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
     setImageUrl(data.publicUrl);
   }
 
-  function handleSave() {
+  async function handleSave() {
     setError("");
     const fd = new FormData();
     fd.append("name", name);
@@ -68,6 +69,12 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
     startTransition(async () => {
       const result = await updateTeamMember(member.id, fd);
       if (result.error) { setError(result.error); return; }
+      // Save link changes
+      for (const link of links) {
+        if (link.id && !link.id.startsWith("new-")) {
+          await updateTeamMemberLink(link.id, link.platform, link.url);
+        }
+      }
       setIsEditing(false);
     });
   }
