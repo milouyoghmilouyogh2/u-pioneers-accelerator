@@ -31,7 +31,7 @@ export default async function AboutUsPage() {
   const teamMembers = await getTeamData();
 
   return (
-    <div className="flex min-h-screen flex-col bg-ink">
+    <div className="flex min-h-screen flex-col bg-ink pb-20 md:pb-0">
       <Navbar />
 
       <main className="flex-1">

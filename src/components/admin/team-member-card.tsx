@@ -93,11 +93,15 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
     });
   }
 
-  function handleRemoveLink(linkId: string) {
-    if (!confirm("حذف هذا الرابط؟")) return;
+  const [linkToDelete, setLinkToDelete] = useState<string | null>(null);
+
+  function confirmDeleteLink() {
+    if (!linkToDelete) return;
+    const id = linkToDelete;
+    setLinkToDelete(null);
     startTransition(async () => {
-      await deleteTeamMemberLink(linkId);
-      setLinks(links.filter((l) => l.id !== linkId));
+      await deleteTeamMemberLink(id);
+      setLinks(links.filter((l) => l.id !== id));
     });
   }
 
@@ -151,7 +155,14 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
             <div key={link.id} className="mb-2 flex items-center gap-2">
               <SocialIcon platform={link.platform} className="size-8" />
               <input type="url" value={link.url} onChange={(e) => setLinks(links.map((l) => l.id === link.id ? { ...l, url: e.target.value } : l))} className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-cream" />
-              <button type="button" onClick={() => handleRemoveLink(link.id)} className="flex size-8 items-center justify-center rounded-lg bg-red-500/10 text-red-400 transition hover:bg-red-500/20 hover:text-red-300" title="حذف الرابط"><Trash2 className="size-4" /></button>
+              {linkToDelete === link.id ? (
+                <div className="flex gap-1">
+                  <button type="button" onClick={confirmDeleteLink} className="rounded bg-red-500 px-2 py-1 text-[10px] font-bold text-white">نعم</button>
+                  <button type="button" onClick={() => setLinkToDelete(null)} className="rounded bg-white/10 px-2 py-1 text-[10px] font-bold text-cream">لا</button>
+                </div>
+              ) : (
+                <button type="button" onClick={() => setLinkToDelete(link.id)} className="flex size-8 items-center justify-center rounded-lg bg-red-500/10 text-red-400 transition hover:bg-red-500/20 hover:text-red-300" title="حذف الرابط"><Trash2 className="size-4" /></button>
+              )}
             </div>
           ))}
           <div className="flex items-center gap-2 mt-3">
