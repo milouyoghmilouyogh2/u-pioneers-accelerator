@@ -16,6 +16,15 @@ interface PremiumPdfProps {
   isPremium: boolean;
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function PremiumPdf({
   studentName,
   projectTitle,
@@ -51,7 +60,7 @@ export function PremiumPdf({
       <tr>
         <td style="font-weight:800;color:#e8720c;font-size:12px;white-space:nowrap;width:30px">${String(w.number).padStart(2, "0")}</td>
         <td style="font-weight:700;color:#0f5132;font-size:11px;white-space:nowrap;width:140px">${w.title}</td>
-        <td style="color:#333;line-height:1.5">${answers[w.number] || "—"}</td>
+        <td style="color:#333;line-height:1.5">${escapeHtml(answers[w.number] || "—")}</td>
       </tr>`
       )
       .join("");
@@ -106,14 +115,14 @@ export function PremiumPdf({
 
 <div class="doc-title">
   <h2>الملف التنفيذي للمشروع</h2>
-  <p class="subtitle">مسار الأسلحة الـ16 — ${projectTitle}</p>
+  <p class="subtitle">مسار الأسلحة الـ16 — ${escapeHtml(projectTitle)}</p>
 </div>
 
 <div class="info-box">
-  <div class="info-item"><div class="label">المؤسس</div><div class="value">${studentName}</div></div>
-  <div class="info-item"><div class="label">المشروع</div><div class="value">${projectTitle}</div></div>
-  <div class="info-item"><div class="label">الجامعة</div><div class="value">${university}</div></div>
-  <div class="info-item"><div class="label">التخصص</div><div class="value">${major}</div></div>
+  <div class="info-item"><div class="label">المؤسس</div><div class="value">${escapeHtml(studentName)}</div></div>
+  <div class="info-item"><div class="label">المشروع</div><div class="value">${escapeHtml(projectTitle)}</div></div>
+  <div class="info-item"><div class="label">الجامعة</div><div class="value">${escapeHtml(university)}</div></div>
+  <div class="info-item"><div class="label">التخصص</div><div class="value">${escapeHtml(major)}</div></div>
 </div>
 
 <div class="weapons-title">مسار الأسلحة الـ16</div>
