@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Cairo } from "next/font/google";
-import { cookies } from "next/headers";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { ThemeProvider, NO_FLASH_THEME_SCRIPT } from "@/components/providers/theme-provider";
 import { PublicMobileNav } from "@/components/marketing/public-mobile-nav";
 import { InstallBanner } from "@/components/ui/install-banner";
+import { getUser } from "@/lib/dal";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -51,11 +51,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Read lightweight cookie set by middleware instead of calling getUser().
-  // The middleware already validated the session; this avoids a redundant
-  // round-trip to Supabase Auth on every page navigation.
-  const cookieStore = await cookies();
-  const isLoggedIn = cookieStore.get("logged-in")?.value === "1";
+  const user = await getUser();
 
   return (
     <html
@@ -98,7 +94,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <ToastProvider>
             {children}
-            <PublicMobileNav isLoggedIn={isLoggedIn} />
+            <PublicMobileNav isLoggedIn={!!user} />
             <InstallBanner />
           </ToastProvider>
         </ThemeProvider>

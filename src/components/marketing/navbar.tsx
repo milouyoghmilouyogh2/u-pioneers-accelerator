@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Rocket } from "lucide-react";
-import { cookies } from "next/headers";
 import { ButtonLink } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { getUser } from "@/lib/dal";
 import { MobileMenu } from "./mobile-menu";
 
 const LINKS = [
@@ -15,9 +15,7 @@ const LINKS = [
 ];
 
 export async function Navbar() {
-  // Read lightweight cookie set by middleware instead of calling getUser().
-  const cookieStore = await cookies();
-  const isLoggedIn = cookieStore.get("logged-in")?.value === "1";
+  const user = await getUser();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-ink/80 backdrop-blur">
@@ -43,7 +41,7 @@ export async function Navbar() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle className="hidden sm:flex" />
-          {isLoggedIn ? (
+          {user ? (
             <ButtonLink href="/dashboard" size="sm">
               لوحة التحكم
             </ButtonLink>
@@ -57,7 +55,7 @@ export async function Navbar() {
               </ButtonLink>
             </>
           )}
-          <MobileMenu isLoggedIn={isLoggedIn} />
+          <MobileMenu isLoggedIn={!!user} />
         </div>
       </nav>
     </header>
