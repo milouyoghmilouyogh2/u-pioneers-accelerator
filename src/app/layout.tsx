@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "U-Pioneers | مسرعة الأعمال الرقمية",
   description:
     "مسرعة أعمال رقمية لمرافقة مشاريع التخرج الابتكارية لطلبة الجامعات الجزائرية وفق القرار الوزاري 1275.",
-  metadataBase: new URL("https://u-pioneers-accelerator.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://u-pioneers-web.vercel.app"),
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

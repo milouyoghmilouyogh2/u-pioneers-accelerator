@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Field, Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/providers/toast-provider";
@@ -18,13 +18,12 @@ export function SettingField({
   hint?: string;
 }) {
   const [pending, setPending] = useState(false);
+  const [value, setValue] = useState(defaultValue);
   const { showToast } = useToast();
-  const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
-    const value = inputRef.current?.value || "";
     const result = await updateSetting(settingKey, value);
     setPending(false);
     if (result?.error) {
@@ -37,7 +36,12 @@ export function SettingField({
   return (
     <form onSubmit={handleSubmit} className="card-luxury flex flex-col gap-3 rounded-xl p-5">
       <Field label={label} hint={hint}>
-        <Input ref={inputRef} name="value" defaultValue={defaultValue} required />
+        <Input
+          name="value"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          required
+        />
       </Field>
       <Button type="submit" size="sm" disabled={pending} className="self-start">
         {pending ? "جارٍ الحفظ..." : "حفظ"}

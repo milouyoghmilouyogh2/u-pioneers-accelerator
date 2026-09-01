@@ -7,7 +7,7 @@ export default async function AdminOverviewPage() {
   await requireAdmin();
   const supabase = await createClient();
 
-  const [{ data: startups }, { count: pendingPayments }, { count: openTickets }] =
+  const [{ data: startups, error: startupsError }, { count: pendingPayments }, { count: openTickets }] =
     await Promise.all([
       supabase
         .from("startups")
@@ -22,6 +22,8 @@ export default async function AdminOverviewPage() {
         .select("*", { count: "exact", head: true })
         .eq("status", "open"),
     ]);
+
+  if (startupsError) console.error("Admin startups query failed:", startupsError.message);
 
   // Get profiles separately to avoid JOIN issues
   const { data: profiles } = await supabase

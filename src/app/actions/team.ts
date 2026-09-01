@@ -108,11 +108,19 @@ export async function deleteTeamMember(memberId: string) {
   return { success: true };
 }
 
+const VALID_PLATFORMS = ["facebook", "x", "linkedin", "instagram", "tiktok", "youtube", "whatsapp", "telegram", "discord", "email", "website"];
+
 export async function addTeamMemberLink(memberId: string, platform: string, url: string) {
   await requireAdmin();
 
   if (!platform || !url) {
     return { error: "المنصة والرابط مطلوبان" };
+  }
+  if (!VALID_PLATFORMS.includes(platform)) {
+    return { error: "المنصة غير صالحة" };
+  }
+  if (platform !== "email" && !url.startsWith("http")) {
+    return { error: "الرابط يجب أن يبدأ بـ http أو https" };
   }
 
   const supabase = await createClient();

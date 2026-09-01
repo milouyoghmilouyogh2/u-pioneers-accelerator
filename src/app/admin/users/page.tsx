@@ -1,18 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/dal";
 import { UsersManager } from "./users-manager";
 
 export default async function AdminUsersPage() {
   await requireAdmin();
   const supabase = await createClient();
-
-  // Get users from auth via admin client
-  const { createClient: createAdminClient } = await import("@supabase/supabase-js");
-  const admin = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  const admin = getAdminClient();
 
   const { data: authUsers } = await admin.auth.admin.listUsers();
   const users = authUsers?.users ?? [];

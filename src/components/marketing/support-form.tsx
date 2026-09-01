@@ -24,8 +24,8 @@ export function SupportForm() {
         <Input name="name" required />
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="رقم الواتساب">
-          <Input name="whatsapp" placeholder="0555123456" />
+        <Field label="رقم الواتساب" hint="مطلوب">
+          <Input name="whatsapp" placeholder="0555123456" required />
         </Field>
         <Field label="نوع الطلب">
           <Select

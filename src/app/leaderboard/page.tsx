@@ -11,12 +11,14 @@ const MEDAL_COLORS = ["text-gold-400", "text-cream-dim", "text-gold-600"];
 
 export default async function LeaderboardPage() {
   const supabase = await createClient();
-  const { data: rows } = await supabase
+  const { data: rows, error } = await supabase
     .from("leaderboard")
     .select("*")
     .order("progress_percentage", { ascending: false })
     .order("current_step", { ascending: false })
     .limit(50);
+
+  if (error) console.error("Leaderboard query failed:", error.message);
 
   return (
     <div className="flex min-h-screen flex-col">

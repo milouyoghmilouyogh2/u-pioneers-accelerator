@@ -51,7 +51,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
       .upload(fileName, file, { contentType: file.type });
 
     if (error) {
-      alert("خطأ في رفع الصورة: " + error.message);
+      setError("خطأ في رفع الصورة: " + error.message);
       return;
     }
 
@@ -89,7 +89,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
     setShowDeleteConfirm(false);
     startTransition(async () => {
       const result = await deleteTeamMember(member.id);
-      if (result.error) alert("خطأ: " + result.error);
+      if (result.error) setError("خطأ: " + result.error);
     });
   }
 

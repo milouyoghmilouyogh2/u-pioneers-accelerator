@@ -2,17 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/dal";
 import { weaponUpdateSchema, settingUpdateSchema, uuidSchema, validate } from "@/lib/validations";
-
-function getAdminClient() {
-  return createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
-}
 
 export async function updateWeapon(formData: FormData) {
   await requireAdmin();
@@ -140,6 +132,12 @@ export async function createUser(formData: FormData) {
   if (password.length < 8) {
     return { error: "كلمة المرور يجب أن تتكون من 8 خانات على الأقل." };
   }
+  if (!/[A-Z]/.test(password)) {
+    return { error: "كلمة المرور يجب أن تحتوي على حرف كبير واحد على الأقل." };
+  }
+  if (!/[0-9]/.test(password)) {
+    return { error: "كلمة المرور يجب أن تحتوي على رقم واحد على الأقل." };
+  }
 
   const admin = getAdminClient();
 
@@ -180,6 +178,12 @@ export async function changeUserPassword(userId: string, newPassword: string) {
 
   if (!newPassword || newPassword.length < 8) {
     return { error: "كلمة المرور يجب أن تتكون من 8 خانات على الأقل." };
+  }
+  if (!/[A-Z]/.test(newPassword)) {
+    return { error: "كلمة المرور يجب أن تحتوي على حرف كبير واحد على الأقل." };
+  }
+  if (!/[0-9]/.test(newPassword)) {
+    return { error: "كلمة المرور يجب أن تحتوي على رقم واحد على الأقل." };
   }
 
   const admin = getAdminClient();
