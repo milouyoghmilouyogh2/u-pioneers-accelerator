@@ -9,7 +9,7 @@ export function InstallBanner() {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={dismiss} />
+      <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
 
       <div className="fixed inset-x-0 bottom-0 z-50 rounded-t-3xl bg-surface p-6 pb-8 shadow-2xl animate-slide-up">
         <div className="mx-auto max-w-md">

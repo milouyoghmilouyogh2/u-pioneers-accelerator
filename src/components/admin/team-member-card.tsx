@@ -154,7 +154,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
           {links.map((link) => (
             <div key={link.id} className="mb-2 flex items-center gap-2">
               <SocialIcon platform={link.platform} className="size-8" />
-              <input type="url" value={link.url} onChange={(e) => setLinks(links.map((l) => l.id === link.id ? { ...l, url: e.target.value } : l))} className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-cream" />
+              <input type="text" value={link.url} onChange={(e) => setLinks(links.map((l) => l.id === link.id ? { ...l, url: e.target.value } : l))} className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-cream" />
               {linkToDelete === link.id ? (
                 <div className="flex gap-1">
                   <button type="button" onClick={confirmDeleteLink} className="rounded bg-red-500 px-2 py-1 text-[10px] font-bold text-white">نعم</button>
@@ -169,7 +169,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
             <select value={newPlatform} onChange={(e) => setNewPlatform(e.target.value)} className="rounded-lg border border-border bg-surface px-2 py-1.5 text-xs text-cream">
               {PLATFORMS.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
             </select>
-            <input type="url" value={newUrl} onChange={(e) => setNewUrl(e.target.value)} placeholder="https://..." className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-cream placeholder:text-muted" onKeyDown={(e) => e.key === "Enter" && addLink()} />
+            <input type="text" value={newUrl} onChange={(e) => setNewUrl(e.target.value)} placeholder="https://..." className="flex-1 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs text-cream placeholder:text-muted" onKeyDown={(e) => e.key === "Enter" && addLink()} />
             <button type="button" onClick={addLink} className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-500 hover:bg-emerald-500/25"><Plus className="size-4" /></button>
           </div>
         </div>
