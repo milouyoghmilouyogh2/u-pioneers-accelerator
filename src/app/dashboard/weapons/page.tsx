@@ -1,6 +1,8 @@
 import { getAnswers, getStartup, getWeapons } from "@/lib/dal";
 import { WeaponsGrid } from "@/components/dashboard/weapons-grid";
 
+export const revalidate = 60;
+
 export default async function WeaponsPage() {
   const startup = await getStartup();
   const [weapons, answers] = await Promise.all([
