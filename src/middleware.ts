@@ -43,6 +43,14 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Set a lightweight cookie so layouts/navbars can check auth status
+  // without making another round-trip to Supabase Auth.
+  if (user) {
+    response.cookies.set("logged-in", "1", { path: "/", httpOnly: false, sameSite: "lax", maxAge: 60 * 60 * 24 * 7 });
+  } else {
+    response.cookies.delete("logged-in");
+  }
+
   const path = request.nextUrl.pathname;
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p));
   const isAuthPage = AUTH_PAGES.includes(path);
