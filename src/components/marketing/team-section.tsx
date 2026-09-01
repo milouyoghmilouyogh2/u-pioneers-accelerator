@@ -47,6 +47,7 @@ export function TeamSection() {
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl">
               <Image
                 src={teamPhoto}
+                loading="lazy"
                 alt="هيثم مواقي - المؤسس والمدير التنفيذي"
                 fill
                 className="object-cover"

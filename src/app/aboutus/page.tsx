@@ -66,6 +66,7 @@ export default async function AboutUsPage() {
                           src={member.image_url}
                           alt={member.name}
                           className="h-full w-full object-cover"
+                          loading="lazy"
                         />
                       )}
                     </div>
