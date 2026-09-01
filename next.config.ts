@@ -7,7 +7,7 @@ const securityHeaders = [
   { key: "X-XSS-Protection", value: "1; mode=block" },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-  { key: "Content-Security-Policy", value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' https://lxnrkokyrhbmhvpxfdri.supabase.co data:; connect-src 'self' https://lxnrkokyrhbmhvpxfdri.supabase.co https://plausible.io; frame-ancestors 'none'" },
+  { key: "Content-Security-Policy", value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' https://lxnrkokyrhbmhvpxfdri.supabase.co data:; connect-src 'self' https://lxnrkokyrhbmhvpxfdri.supabase.co https://plausible.io; frame-ancestors 'none'" },
   { key: "Access-Control-Allow-Origin", value: "https://u-pioneers-web.vercel.app" },
 ];
 
