@@ -121,32 +121,19 @@ export function CertificateCanvas({
     }
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const url = canvas.toDataURL("image/png");
 
-    // Mobile-compatible download
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      // On mobile, open in new tab so user can long-press to save
-      const win = window.open(url, "_blank");
-      if (!win) {
-        // Fallback: create visible link
-        const a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-    } else {
-      // Desktop: direct download
+    // Use toBlob for better mobile compatibility (works on iOS 13+, Android Chrome)
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = `شهادة-${studentName}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-    }
+      URL.revokeObjectURL(url);
+    }, "image/png");
   }
 
   return (

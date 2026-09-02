@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download } from "lucide-react";
+import { Download, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PaywallPopup } from "./paywall-popup";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -143,18 +143,33 @@ export function PremiumPdf({
 </body>
 </html>`;
 
-    // Open in new window and trigger print
-    const printWindow = window.open("", "_blank");
-    if (printWindow) {
-      printWindow.document.write(html);
-      printWindow.document.close();
-      // Wait for content to render, then trigger print
+    // Use hidden iframe + print — works on mobile and desktop, no popup blocker issues
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "none";
+    document.body.appendChild(iframe);
+
+    const iframeDoc = iframe.contentWindow?.document;
+    if (iframeDoc) {
+      iframeDoc.open();
+      iframeDoc.write(html);
+      iframeDoc.close();
+
+      // Wait for content to render, then trigger print (user selects "Save as PDF")
       setTimeout(() => {
-        printWindow.print();
-        setGenerating(false);
+        iframe.contentWindow?.print();
+        // Clean up after print dialog closes
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+          setGenerating(false);
+        }, 1000);
       }, 500);
     } else {
-      // Fallback: download as HTML file
+      // Ultimate fallback: download as HTML
       const blob = new Blob([html], { type: "text/html" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -179,9 +194,9 @@ export function PremiumPdf({
         </Button>
       </div>
 
-      {/* Preview of first 3 weapons */}
-      <div className="mt-4 flex flex-col gap-3">
-        {weapons.slice(0, 3).map((w) => (
+      {/* Preview: show all weapons for premium, first 3 for free users */}
+      <div className={`mt-4 flex flex-col gap-3 ${!isPremium ? "max-h-40 overflow-hidden relative" : ""}`}>
+        {weapons.map((w) => (
           <div key={w.number} className="border-b border-border pb-3 last:border-0">
             <p className="text-xs font-bold text-gold-500">
               {String(w.number).padStart(2, "0")} — {w.title}
@@ -191,10 +206,16 @@ export function PremiumPdf({
             </p>
           </div>
         ))}
-        {weapons.length > 3 && (
-          <p className="text-center text-xs text-muted">
-            + {weapons.length - 3} أسلحاً أخرى في الملف الكامل
-          </p>
+        {!isPremium && (
+          <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-gradient-to-t from-surface via-surface/95 to-transparent pt-16 pb-4">
+            <div
+              onClick={() => setShowPaywall(true)}
+              className="flex size-12 cursor-pointer items-center justify-center rounded-xl bg-gold-500/15 border border-gold-500/30 transition hover:scale-105 hover:bg-gold-500/25"
+            >
+              <Lock className="size-5 text-gold-500" />
+            </div>
+            <p className="mt-2 text-xs font-semibold text-cream">اشترك لفتح الملف</p>
+          </div>
         )}
       </div>
     </div>
