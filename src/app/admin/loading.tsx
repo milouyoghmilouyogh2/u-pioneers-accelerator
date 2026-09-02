@@ -16,56 +16,59 @@ export default function AdminLoading() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6">
-        {/* Sidebar skeleton */}
-        <aside className="hidden w-60 shrink-0 md:block">
-          <div className="card-luxury sticky top-20 rounded-2xl p-3">
-            <div className="space-y-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2.5">
-                  <div className="size-5 animate-pulse rounded bg-border/50" />
-                  <div className="h-4 w-24 animate-pulse rounded bg-border/50" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* Main content skeleton */}
-        <main className="min-w-0 flex-1">
-          <div className="mb-6">
-            <div className="h-7 w-40 animate-pulse rounded bg-border/50" />
-            <div className="mt-2 h-4 w-64 animate-pulse rounded bg-border/50" />
-          </div>
-
-          {/* Stats cards */}
-          <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="card-luxury rounded-2xl p-5">
-                <div className="mb-3 h-4 w-20 animate-pulse rounded bg-border/50" />
-                <div className="mb-1 h-8 w-16 animate-pulse rounded bg-border/50" />
-                <div className="h-3 w-24 animate-pulse rounded bg-border/50" />
-              </div>
-            ))}
-          </div>
-
-          {/* Table skeleton */}
-          <div className="card-luxury rounded-2xl p-6">
-            <div className="mb-4 h-5 w-32 animate-pulse rounded bg-border/50" />
-            <div className="space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-4 rounded-lg border border-border/50 p-4">
-                  <div className="size-10 animate-pulse rounded-full bg-border/50" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 w-48 animate-pulse rounded bg-border/50" />
-                    <div className="h-3 w-32 animate-pulse rounded bg-border/50" />
+      {/* Content — no sidebar on mobile, sidebar only on md+ */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+        <div className="flex gap-6">
+          {/* Sidebar skeleton — hidden on mobile */}
+          <aside className="hidden w-60 shrink-0 md:block">
+            <div className="card-luxury sticky top-20 rounded-2xl p-3">
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2.5">
+                    <div className="size-5 animate-pulse rounded bg-border/50" />
+                    <div className="h-4 w-24 animate-pulse rounded bg-border/50" />
                   </div>
-                  <div className="h-8 w-20 animate-pulse rounded bg-border/50" />
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          {/* Main content skeleton */}
+          <main className="min-w-0 flex-1">
+            <div className="mb-6">
+              <div className="h-7 w-40 animate-pulse rounded bg-border/50" />
+              <div className="mt-2 h-4 w-64 animate-pulse rounded bg-border/50" />
+            </div>
+
+            {/* Stats cards */}
+            <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="card-luxury rounded-2xl p-5">
+                  <div className="mb-3 h-4 w-20 animate-pulse rounded bg-border/50" />
+                  <div className="mb-1 h-8 w-16 animate-pulse rounded bg-border/50" />
+                  <div className="h-3 w-24 animate-pulse rounded bg-border/50" />
                 </div>
               ))}
             </div>
-          </div>
-        </main>
+
+            {/* Table skeleton */}
+            <div className="card-luxury rounded-2xl p-6">
+              <div className="mb-4 h-5 w-32 animate-pulse rounded bg-border/50" />
+              <div className="space-y-3">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 rounded-lg border border-border/50 p-4">
+                    <div className="size-10 animate-pulse rounded-full bg-border/50" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-48 animate-pulse rounded bg-border/50" />
+                      <div className="h-3 w-32 animate-pulse rounded bg-border/50" />
+                    </div>
+                    <div className="h-8 w-20 animate-pulse rounded bg-border/50" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );
