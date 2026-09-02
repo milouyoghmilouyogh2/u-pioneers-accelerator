@@ -6,19 +6,22 @@ import {
   ArrowLeft,
   Rocket,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 
 // Revalidate landing page every 5 minutes (static + ISR)
 export const revalidate = 300;
-import { TeamSection } from "@/components/marketing/team-section";
-import { AlgeriaMap } from "@/components/marketing/algeria-map";
-import { WeaponsPile } from "@/components/marketing/weapons-pile";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import { Counter } from "@/components/ui/counter";
 import { createClient } from "@/lib/supabase/server";
+
+// Lazy-load heavy components — they're not needed for initial paint.
+const TeamSection = dynamic(() => import("@/components/marketing/team-section").then(m => ({ default: m.TeamSection })));
+const AlgeriaMap = dynamic(() => import("@/components/marketing/algeria-map").then(m => ({ default: m.AlgeriaMap })));
+const WeaponsPile = dynamic(() => import("@/components/marketing/weapons-pile").then(m => ({ default: m.WeaponsPile })));
 
 export default async function LandingPage() {
   const supabase = await createClient();

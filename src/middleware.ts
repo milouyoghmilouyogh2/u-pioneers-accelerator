@@ -14,6 +14,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  const path = request.nextUrl.pathname;
+  const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p));
+  const isAuthPage = AUTH_PAGES.includes(path);
+
+  // Skip Supabase auth call entirely for public pages that don't need it.
+  // Only create a Supabase client and check auth for protected/auth pages.
+  if (!isProtected && !isAuthPage) {
+    return NextResponse.next({ request });
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -42,10 +52,6 @@ export async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const path = request.nextUrl.pathname;
-  const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p));
-  const isAuthPage = AUTH_PAGES.includes(path);
 
   if (isProtected && !user) {
     const url = request.nextUrl.clone();

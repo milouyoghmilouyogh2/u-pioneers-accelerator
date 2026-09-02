@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Script from "next/script";
 import { Cairo } from "next/font/google";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { ThemeProvider, NO_FLASH_THEME_SCRIPT } from "@/components/providers/theme-provider";
 import { PublicMobileNav } from "@/components/marketing/public-mobile-nav";
 import { InstallBanner } from "@/components/ui/install-banner";
-import { getUser } from "@/lib/dal";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -51,7 +51,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const user = await getUser();
+  // Instant cookie check — no Supabase network call needed.
+  // Real auth is enforced in dashboard/admin layouts via getProfile/requireAdmin.
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.getAll().some(
+    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
+  );
 
   return (
     <html
@@ -94,7 +99,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <ToastProvider>
             {children}
-            <PublicMobileNav isLoggedIn={!!user} />
+            <PublicMobileNav isLoggedIn={isLoggedIn} />
             <InstallBanner />
           </ToastProvider>
         </ThemeProvider>

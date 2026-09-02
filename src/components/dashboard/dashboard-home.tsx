@@ -1,44 +1,16 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Sparkles, ShieldCheck } from "lucide-react";
 import { ProgressRing } from "./progress-ring";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@/lib/supabase/client";
 
-export function DashboardHome() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+interface DashboardHomeProps {
+  profile: any;
+  startup: any;
+  weapons: any[];
+}
 
-  useEffect(() => {
-    async function fetch() {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const [profileRes, startupRes, weaponsRes] = await Promise.all([
-        supabase.from("profiles").select("*").eq("id", user.id).single(),
-        supabase.from("startups").select("*").eq("owner_id", user.id).single(),
-        supabase.from("weapons").select("*").order("number", { ascending: true }),
-      ]);
-
-      setData({
-        profile: profileRes.data,
-        startup: startupRes.data,
-        weapons: weaponsRes.data || [],
-      });
-      setLoading(false);
-    }
-    fetch();
-  }, []);
-
-  if (loading) return <div className="flex items-center justify-center py-20"><div className="size-8 animate-spin rounded-full border-2 border-gold-500 border-t-transparent" /></div>;
-
-  if (!data) return null;
-
-  const { profile, startup, weapons } = data;
+export function DashboardHome({ profile, startup, weapons }: DashboardHomeProps) {
   const isDone = startup.current_step > 16;
   const focusWeapon = !isDone ? weapons[startup.current_step - 1] : null;
 
