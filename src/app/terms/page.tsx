@@ -2,6 +2,9 @@ import Link from "next/link";
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 
+// Pure static content — pre-built at deploy time, zero server work on click.
+export const dynamic = "force-static";
+
 export default function TermsPage() {
   return (
     <div className="flex min-h-screen flex-col">

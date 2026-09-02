@@ -6,6 +6,9 @@ import { Reveal } from "@/components/ui/reveal";
 import { SocialLink } from "@/components/ui/social-icons";
 import { createClient } from "@/lib/supabase/server";
 
+// Pre-build every 5 minutes — zero server work on click between refreshes.
+export const revalidate = 300;
+
 async function getTeamData() {
   const supabase = await createClient();
   const { data: members } = await supabase

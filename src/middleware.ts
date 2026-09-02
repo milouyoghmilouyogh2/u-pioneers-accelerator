@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
   const isAuthPage = AUTH_PAGES.includes(path);
 
   // Skip Supabase auth call entirely for public pages that don't need it.
-  // Only create a Supabase client and check auth for protected/auth pages.
   if (!isProtected && !isAuthPage) {
     return NextResponse.next({ request });
   }
@@ -47,8 +46,6 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // Optimistic check only (cookie-derived session) — real authorization
-  // (role, ownership) is re-verified server-side in layouts/actions.
   const {
     data: { user },
   } = await supabase.auth.getUser();

@@ -3,6 +3,9 @@ import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { Badge } from "@/components/ui/badge";
 
+// Pure static content — pre-built at deploy time, zero server work on click.
+export const dynamic = "force-static";
+
 export default function PrivacyPage() {
   return (
     <div className="flex min-h-screen flex-col">
