@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, escalateLockout } from "@/lib/rate-limit";
 import {
   signUpSchema,
   signInSchema,
@@ -111,6 +111,8 @@ export async function signInAction(
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
 
   if (error) {
+    // Escalate lockout on failed login
+    escalateLockout(`signin:${email}`, 300);
     return { error: translateAuthError(error.message) };
   }
 

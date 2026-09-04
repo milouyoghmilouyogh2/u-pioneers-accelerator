@@ -1,10 +1,13 @@
 /**
- * Simple in-memory rate limiter for server actions.
+ * Escalating in-memory rate limiter for server actions.
+ * Lockout duration doubles with each failed attempt, up to 48 hours max.
  * Works per-Vercel-serverless-instance (good enough for MVP).
- * For distributed rate limiting, upgrade to @upstash/ratelimit + Redis.
  */
 
-const store = new Map<string, { count: number; resetAt: number }>();
+const store = new Map<
+  string,
+  { count: number; resetAt: number; level: number }
+>();
 
 // Clean up expired entries every 5 minutes
 const cleanupInterval = setInterval(() => {
@@ -14,23 +17,29 @@ const cleanupInterval = setInterval(() => {
   }
 }, 5 * 60 * 1000);
 
-// Prevent memory leak in serverless
 if (typeof cleanupInterval === "object" && cleanupInterval.unref) {
   cleanupInterval.unref();
 }
 
+const MAX_LOCKOUT_SECONDS = 48 * 60 * 60; // 48 hours
+
 interface RateLimitConfig {
-  /** Unique key (e.g. IP + action name) */
   key: string;
-  /** Max attempts allowed in the window */
   maxAttempts: number;
-  /** Window duration in seconds */
   windowSeconds: number;
 }
 
 /**
- * Check and increment rate limit. Returns { success: true } if allowed,
- * or { success: false, retryAfter: seconds } if rate limited.
+ * Calculate lockout duration based on escalation level.
+ * Level 1 = base window, each subsequent level doubles, capped at 48h.
+ */
+function getLockoutSeconds(baseWindow: number, level: number): number {
+  const duration = baseWindow * Math.pow(2, level);
+  return Math.min(duration, MAX_LOCKOUT_SECONDS);
+}
+
+/**
+ * Check and increment rate limit with escalating lockouts.
  */
 export function checkRateLimit({
   key,
@@ -41,8 +50,8 @@ export function checkRateLimit({
   const entry = store.get(key);
 
   if (!entry || now > entry.resetAt) {
-    // First request or window expired — start new window
-    store.set(key, { count: 1, resetAt: now + windowSeconds * 1000 });
+    // Window expired or first attempt — start fresh at level 0
+    store.set(key, { count: 1, resetAt: now + windowSeconds * 1000, level: 0 });
     return { success: true };
   }
 
@@ -56,18 +65,29 @@ export function checkRateLimit({
 }
 
 /**
- * Generate a rate limit key for a specific action.
- * Uses action name + user identifier when available.
+ * Called after a FAILED attempt to escalate the lockout level.
+ * Doubles the window for the next lockout, capped at 48 hours.
  */
+export function escalateLockout(key: string, baseWindow: number): void {
+  const entry = store.get(key);
+  if (!entry) return;
+
+  const newLevel = entry.level + 1;
+  const newDuration = getLockoutSeconds(baseWindow, newLevel);
+  const now = Date.now();
+
+  // Force lockout by setting count to max and extending resetAt
+  store.set(key, {
+    count: 999, // well above any maxAttempts
+    resetAt: now + newDuration * 1000,
+    level: newLevel,
+  });
+}
+
 export function getRateLimitKey(action: string, identifier?: string): string {
   return identifier ? `${action}:${identifier}` : action;
 }
 
-/**
- * Get client IP from request headers.
- * In server actions we cannot access headers directly,
- * so we use a per-email key instead.
- */
 export function getClientKey(action: string, email?: string): string {
   return email ? `${action}:${email}` : action;
 }
